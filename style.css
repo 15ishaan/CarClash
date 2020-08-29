@@ -1,50 +1,70 @@
-*{
-	margin:0;
-	padding: 0;
-	font-family: century gothic;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: century gothic;
 }
-.hide{
-	display: none;
+body {
+  overflow: hidden;
 }
-.roadLineLeft1{
-	position: absolute;
-	height: 100px;
-	width: 10px;
-	background: white;
-	margin-left: 167px;
+.hide {
+  display: none;
 }
-.roadLineLeft2{
-	position: absolute;
-	height: 100px;
-	width: 10px;
-	background: white;
-	margin-left: 334px;
+.roadLineLeft1 {
+  height: 100px;
+  width: 10px;
+  background: white;
+  position: absolute;
+  left: 167px;
 }
-.roadLineRight1{
-	position: absolute;
-	height: 100px;
-	width: 10px;
-	background: white;
-	margin-left: 167px;
+.roadLineLeft2 {
+  height: 100px;
+  width: 10px;
+  background: white;
+  position: absolute;
+  right: 167px;
 }
-.roadLineRight2{
-	position: absolute;
-	height: 100px;
-	width: 10px;
-	background: white;
-	margin-left: 334px;
+.roadLineRight1 {
+  height: 100px;
+  width: 10px;
+  background: white;
+  position: absolute;
+  left: 167px;
 }
-.gameAreaLeft{
-	width: 500px;
-	height: 100vh;
-	background-color: #424242;
-	position: absolute;
-	left: 16%;
+.roadLineRight2 {
+  height: 100px;
+  width: 10px;
+  background: white;
+  position: absolute;
+  right: 167px;
 }
-.gameAreaRight{
-	width: 500px;
-	height: 100vh;
-	background-color: #424242;
-	position: absolute;
-	left: 52%;
+.carPlayer1 {
+  width: 50px;
+  height: 70px;
+  background-color: orange;
+  position: absolute;
+  left: 50px;
+  bottom: 50px;
+}
+.carPlayer2 {
+  width: 50px;
+  height: 70px;
+  background-color: orange;
+  position: absolute;
+  left: 50px;
+  bottom: 50px;
+}
+.gameAreaLeft {
+  width: 500px;
+  height: 100vh;
+  background-color: #424242;
+  position: absolute;
+  left: 13%;
+}
+.gameAreaRight {
+  width: 500px;
+  height: 100vh;
+  background-color: #424242;
+  position: absolute;
+  right: 13%;
 }
