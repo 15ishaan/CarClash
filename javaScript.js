@@ -6,8 +6,21 @@ const gameAreaRight = document.querySelector(".gameAreaRight");
 let player1 = { speed: 5 };
 let player2 = { speed: 5 };
 
-//Creating keys object to map keys pressed
-let keys = {ArrowUp: false,ArrowDown: false,ArrowLeft: false,ArrowRight: false,w: false,s: false,a: false,d: false,W: false,S: false,A: false,D: false};
+//Creating keys object to map the keys pressed
+let keys = {
+  ArrowUp: false,
+  ArrowDown: false,
+  ArrowLeft: false,
+  ArrowRight: false,
+  w: false,
+  s: false,
+  a: false,
+  d: false,
+  W: false,
+  S: false,
+  A: false,
+  D: false,
+};
 
 //EventListeners
 startScreen.addEventListener("click", start);
@@ -15,92 +28,125 @@ document.addEventListener("keydown", keyDown);
 document.addEventListener("keyup", keyUp);
 
 //Functions
-function moveLines()
-{
-	let roadLineLeft1 = document.querySelectorAll('.roadLineLeft1');
-	let roadLineLeft2 = document.querySelectorAll('.roadLineLeft2');
-	let roadLineRight1 = document.querySelectorAll('.roadLineRight1');
-	let roadLineRight2 = document.querySelectorAll('.roadLineRight2');
 
-	roadLineLeft1.forEach(function(item)
-	{
-		if(item.y >= 800)
-		{
-			item.y -= 750;
-		}
+// fxns to check whether players race is finished:
+// Player1
+function player1RaceFinished(carPlayer1, finishLineLeft) {
+  let carRect = carPlayer1.getBoundingClientRect();
+  let finishLineRect = finishLineLeft.getBoundingClientRect();
 
-		item.y += player1.speed;
-		item.style.top = item.y + 'px';
-	})
-
-	roadLineLeft2.forEach(function(item)
-	{
-		if(item.y >= 800)
-		{
-			item.y -= 750;
-		}
-
-		item.y += player1.speed;
-		item.style.top = item.y + 'px';
-	})
-
-	roadLineRight1.forEach(function(item)
-	{
-		if(item.y >= 800)
-		{
-			item.y -= 750;
-		}
-
-		item.y += player2.speed;
-		item.style.top = item.y + 'px';
-	})
-
-	roadLineRight2.forEach(function(item)
-	{
-		if(item.y >= 800)
-		{
-			item.y -= 750;
-		}
-
-		item.y += player2.speed;
-		item.style.top = item.y + 'px';
-	})
+  return carRect.top < finishLineRect.top;
 }
-function moveEnemy()
-{
-	let enemyLeft = document.querySelectorAll('.enemyLeft');
-	let enemyRight = document.querySelectorAll('.enemyRight');
+// Player2
+function player2RaceFinished(carPlayer2, finishLineRight) {
+  let carRect = carPlayer2.getBoundingClientRect();
+  let finishLineRect = finishLineRight.getBoundingClientRect();
 
-	enemyLeft.forEach(function(item)
-	{
-		if(item.y >= 700)
-		{
-			item.y = -300;
-			item.style.left = Math.floor(Math.random()*400)+ 'px';
-		}
-
-		item.y += player1.speed;
-		item.style.top = item.y + 'px';
-	})
-
-	enemyRight.forEach(function(item)
-	{
-		if(item.y >= 700)
-		{
-			item.y = -300;
-			item.style.left = Math.floor(Math.random()*400)+ 'px';
-		}
-
-		item.y += player2.speed;
-		item.style.top = item.y + 'px';
-	})
+  return carRect.top < finishLineRect.top;
 }
 
+//moveLines() adds movemment to road stripes
+function moveLines() {
+  let roadLineLeft1 = document.querySelectorAll(".roadLineLeft1");
+  let roadLineLeft2 = document.querySelectorAll(".roadLineLeft2");
+  let roadLineRight1 = document.querySelectorAll(".roadLineRight1");
+  let roadLineRight2 = document.querySelectorAll(".roadLineRight2");
 
+  roadLineLeft1.forEach(function (item) {
+    if (item.y >= 800) {
+      item.y -= 750;
+    }
 
+    item.y += player1.speed;
+    item.style.top = item.y + "px";
+  });
+
+  roadLineLeft2.forEach(function (item) {
+    if (item.y >= 800) {
+      item.y -= 750;
+    }
+
+    item.y += player1.speed;
+    item.style.top = item.y + "px";
+  });
+
+  roadLineRight1.forEach(function (item) {
+    if (item.y >= 800) {
+      item.y -= 750;
+    }
+
+    item.y += player2.speed;
+    item.style.top = item.y + "px";
+  });
+
+  roadLineRight2.forEach(function (item) {
+    if (item.y >= 800) {
+      item.y -= 750;
+    }
+
+    item.y += player2.speed;
+    item.style.top = item.y + "px";
+  });
+}
+
+//moveStartLine() adds movement to finish lines
+let startLinePosition = 70;
+function moveStartLine() {
+  let startLineLeft = document.querySelector(".startLineLeft");
+  let startLineRight = document.querySelector(".startLineRight");
+
+  startLinePosition--; //Change this value at the end!!!!
+  startLineLeft.style.bottom = startLinePosition + "px";
+  startLineRight.style.bottom = startLinePosition + "px";
+}
+//moveFinishLine() adds movement to finish lines
+let finishLinePosition = -500;
+function moveFinishLine(carPlayer1, carPlayer2) {
+  let finishLineLeft = document.querySelector(".finishLineLeft");
+  let finishLineRight = document.querySelector(".finishLineRight");
+
+  // Calling raceFinished() fxn to check whether player1's race is finished
+  if (player1RaceFinished(carPlayer1, finishLineLeft)) {
+    console.log("Player1 Race Finished");
+  }
+
+  if (player2RaceFinished(carPlayer2, finishLineRight)) {
+    console.log("Player2 Race Finished");
+  }
+
+  finishLinePosition++; //Change this value at the end!!!!
+  finishLineLeft.style.top = finishLinePosition + "px";
+  finishLineRight.style.top = finishLinePosition + "px";
+}
+
+//moveEnemy() adds movemment to enemy cars
+function moveEnemy() {
+  let enemyLeft = document.querySelectorAll(".enemyLeft");
+  let enemyRight = document.querySelectorAll(".enemyRight");
+
+  enemyLeft.forEach(function (item) {
+    if (item.y >= 700) {
+      item.y = -300;
+      item.style.left = Math.floor(Math.random() * 400) + "px";
+    }
+
+    item.y += player1.speed;
+    item.style.top = item.y + "px";
+  });
+
+  enemyRight.forEach(function (item) {
+    if (item.y >= 700) {
+      item.y = -300;
+      item.style.left = Math.floor(Math.random() * 400) + "px";
+    }
+
+    item.y += player2.speed;
+    item.style.top = item.y + "px";
+  });
+}
+
+// start() fxn will create playing area and then calls gameplay() fxn
 function start() {
-  // start() fxn willcreate playing area and then calls gameplay() fxn
-
   startScreen.classList.add("hide");
   gameAreaRight.classList.remove("hide");
   gameAreaLeft.classList.remove("hide");
@@ -136,21 +182,39 @@ function start() {
     gameAreaRight.appendChild(roadLineRight2);
   }
 
-  for(x = 0; x < 3; x++){
-	let enemyLeft = document.createElement('div');
-	enemyLeft.setAttribute('class', 'enemyLeft');
-	enemyLeft.y = ((x+1)*350)*-1;
-	enemyLeft.style.top = enemyLeft.y+'px';
-	enemyLeft.style.left = Math.floor(Math.random()*400)+ 'px';
-	gameAreaLeft.appendChild(enemyLeft);
+  // Generating Starting and Finish line
+  let startLineLeft = document.createElement("div");
+  startLineLeft.setAttribute("class", "startLineLeft");
+  gameAreaLeft.appendChild(startLineLeft);
 
-	let enemyRight = document.createElement('div');
-	enemyRight.setAttribute('class', 'enemyRight');
-	enemyRight.y = ((x+1)*350)*-1;
-	enemyRight.style.top = enemyRight.y+'px';
-	enemyRight.style.left = Math.floor(Math.random()*400)+ 'px';
-	gameAreaRight.appendChild(enemyRight);
- }
+  let finishLineLeft = document.createElement("div");
+  finishLineLeft.setAttribute("class", "finishLineLeft");
+  gameAreaLeft.appendChild(finishLineLeft);
+
+  let startLineRight = document.createElement("div");
+  startLineRight.setAttribute("class", "startLineRight");
+  gameAreaRight.appendChild(startLineRight);
+
+  let finishLineRight = document.createElement("div");
+  finishLineRight.setAttribute("class", "finishLineRight");
+  gameAreaRight.appendChild(finishLineRight);
+
+  // Generating enemy cars
+  for (x = 0; x < 3; x++) {
+    let enemyLeft = document.createElement("div");
+    enemyLeft.setAttribute("class", "enemyLeft");
+    enemyLeft.y = (x + 1) * 350 * -1;
+    enemyLeft.style.top = enemyLeft.y + "px";
+    enemyLeft.style.left = Math.floor(Math.random() * 400) + "px";
+    gameAreaLeft.appendChild(enemyLeft);
+
+    let enemyRight = document.createElement("div");
+    enemyRight.setAttribute("class", "enemyRight");
+    enemyRight.y = (x + 1) * 350 * -1;
+    enemyRight.style.top = enemyRight.y + "px";
+    enemyRight.style.left = Math.floor(Math.random() * 400) + "px";
+    gameAreaRight.appendChild(enemyRight);
+  }
 
   //Adding Player Cars
   let carPlayer1 = document.createElement("div");
@@ -178,24 +242,31 @@ function gamePlay() {
   let carPlayer2 = document.querySelector(".carPlayer2");
   //   console.log(areaRight);
 
-  //Adding movement to the player cars
+  if (player1.ready && player2.ready) {
+    moveLines();
+    moveEnemy();
+    moveStartLine();
+    moveFinishLine(carPlayer1, carPlayer2);
+  }
+
+  //Adding movement to the player cars:
+  //Player1
   if (player1.ready) {
     if ((keys.w || keys.W) && player1.y > 0) player1.y -= player1.speed;
-    if ((keys.s || keys.S) && player1.y < areaLeft.bottom - 70) player1.y += player1.speed;
+    if ((keys.s || keys.S) && player1.y < areaLeft.bottom - 70)
+      player1.y += player1.speed;
     if ((keys.a || keys.A) && player1.x > 0) player1.x -= player1.speed;
-    if ((keys.d || keys.D) && player1.x < areaLeft.width - 50) player1.x += player1.speed;
+    if ((keys.d || keys.D) && player1.x < areaLeft.width - 50)
+      player1.x += player1.speed;
   }
-
+  //Player2
   if (player2.ready) {
     if (keys.ArrowUp && player2.y > 0) player2.y -= player2.speed;
-    if (keys.ArrowDown && player2.y < areaRight.bottom - 70) player2.y += player2.speed;
+    if (keys.ArrowDown && player2.y < areaRight.bottom - 70)
+      player2.y += player2.speed;
     if (keys.ArrowLeft && player2.x > 0) player2.x -= player2.speed;
-    if (keys.ArrowRight && player2.x < areaRight.width - 50) player2.x += player2.speed;
-  }
-
-  if(player1.ready && player2.ready) {
-  	moveLines();
-  	moveEnemy();
+    if (keys.ArrowRight && player2.x < areaRight.width - 50)
+      player2.x += player2.speed;
   }
 
   //Changing the position of cars
@@ -221,5 +292,3 @@ function keyUp(e) {
   // console.log(e.key);
   // console.log(keys);
 }
-
-

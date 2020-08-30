@@ -38,21 +38,65 @@ body {
   position: absolute;
   right: 167px;
 }
+.startLineLeft {
+  width: 100%;
+  height: 20px;
+  background: url(./img/line.png);
+  background-size: 100%;
+  position: absolute;
+  bottom: 0px;
+}
+.finishLineLeft {
+  width: 100%;
+  height: 20px;
+  background: url(./img/line.png);
+  background-size: 100%;
+  position: absolute;
+  top: -500px; /*Change this value accordingly*/
+}
+.startLineRight {
+  width: 100%;
+  height: 20px;
+  background: url(./img/line.png);
+  background-size: 100%;
+  position: absolute;
+  bottom: 0px;
+}
+.finishLineRight {
+  width: 100%;
+  height: 20px;
+  background: url(./img/line.png);
+  background-size: 100%;
+  position: absolute;
+  top: -500px; /*Change this value accordingly*/
+}
+.enemyLeft {
+  position: absolute;
+  width: 50px;
+  height: 80px;
+  background-color: rgb(199, 55, 55);
+}
+.enemyRight {
+  position: absolute;
+  width: 50px;
+  height: 80px;
+  background-color: rgb(199, 55, 55);
+}
 .carPlayer1 {
   width: 50px;
   height: 70px;
-  background-color: orange;
+  background-color: rgb(247, 182, 63);
   position: absolute;
-  left: 50px;
-  bottom: 50px;
+  left: 225px;
+  bottom: 0px;
 }
 .carPlayer2 {
   width: 50px;
   height: 70px;
-  background-color: orange;
+  background-color: rgb(247, 182, 63);
   position: absolute;
-  left: 50px;
-  bottom: 50px;
+  left: 225px;
+  bottom: 0px;
 }
 .gameAreaLeft {
   width: 500px;
@@ -67,16 +111,4 @@ body {
   background-color: #424242;
   position: absolute;
   right: 13%;
-}
-.enemyLeft{
-	position: absolute;
-	height: 80px;
-	width: 50px;
-	background-color: blue;
-}
-.enemyRight{
-	position: absolute;
-	height: 80px;
-	width: 50px;
-	background-color: blue;
 }
