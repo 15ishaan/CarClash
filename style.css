@@ -68,3 +68,15 @@ body {
   position: absolute;
   right: 13%;
 }
+.enemyLeft{
+	position: absolute;
+	height: 80px;
+	width: 50px;
+	background-color: blue;
+}
+.enemyRight{
+	position: absolute;
+	height: 80px;
+	width: 50px;
+	background-color: blue;
+}

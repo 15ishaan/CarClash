@@ -7,20 +7,7 @@ let player1 = { speed: 5 };
 let player2 = { speed: 5 };
 
 //Creating keys object to map keys pressed
-let keys = {
-  ArrowUp: false,
-  ArrowDown: false,
-  ArrowLeft: false,
-  ArrowRight: false,
-  w: false,
-  s: false,
-  a: false,
-  d: false,
-  W: false,
-  S: false,
-  A: false,
-  D: false,
-};
+let keys = {ArrowUp: false,ArrowDown: false,ArrowLeft: false,ArrowRight: false,w: false,s: false,a: false,d: false,W: false,S: false,A: false,D: false};
 
 //EventListeners
 startScreen.addEventListener("click", start);
@@ -28,6 +15,89 @@ document.addEventListener("keydown", keyDown);
 document.addEventListener("keyup", keyUp);
 
 //Functions
+function moveLines()
+{
+	let roadLineLeft1 = document.querySelectorAll('.roadLineLeft1');
+	let roadLineLeft2 = document.querySelectorAll('.roadLineLeft2');
+	let roadLineRight1 = document.querySelectorAll('.roadLineRight1');
+	let roadLineRight2 = document.querySelectorAll('.roadLineRight2');
+
+	roadLineLeft1.forEach(function(item)
+	{
+		if(item.y >= 800)
+		{
+			item.y -= 750;
+		}
+
+		item.y += player1.speed;
+		item.style.top = item.y + 'px';
+	})
+
+	roadLineLeft2.forEach(function(item)
+	{
+		if(item.y >= 800)
+		{
+			item.y -= 750;
+		}
+
+		item.y += player1.speed;
+		item.style.top = item.y + 'px';
+	})
+
+	roadLineRight1.forEach(function(item)
+	{
+		if(item.y >= 800)
+		{
+			item.y -= 750;
+		}
+
+		item.y += player2.speed;
+		item.style.top = item.y + 'px';
+	})
+
+	roadLineRight2.forEach(function(item)
+	{
+		if(item.y >= 800)
+		{
+			item.y -= 750;
+		}
+
+		item.y += player2.speed;
+		item.style.top = item.y + 'px';
+	})
+}
+function moveEnemy()
+{
+	let enemyLeft = document.querySelectorAll('.enemyLeft');
+	let enemyRight = document.querySelectorAll('.enemyRight');
+
+	enemyLeft.forEach(function(item)
+	{
+		if(item.y >= 700)
+		{
+			item.y = -300;
+			item.style.left = Math.floor(Math.random()*400)+ 'px';
+		}
+
+		item.y += player1.speed;
+		item.style.top = item.y + 'px';
+	})
+
+	enemyRight.forEach(function(item)
+	{
+		if(item.y >= 700)
+		{
+			item.y = -300;
+			item.style.left = Math.floor(Math.random()*400)+ 'px';
+		}
+
+		item.y += player2.speed;
+		item.style.top = item.y + 'px';
+	})
+}
+
+
+
 function start() {
   // start() fxn willcreate playing area and then calls gameplay() fxn
 
@@ -66,6 +136,22 @@ function start() {
     gameAreaRight.appendChild(roadLineRight2);
   }
 
+  for(x = 0; x < 3; x++){
+	let enemyLeft = document.createElement('div');
+	enemyLeft.setAttribute('class', 'enemyLeft');
+	enemyLeft.y = ((x+1)*350)*-1;
+	enemyLeft.style.top = enemyLeft.y+'px';
+	enemyLeft.style.left = Math.floor(Math.random()*400)+ 'px';
+	gameAreaLeft.appendChild(enemyLeft);
+
+	let enemyRight = document.createElement('div');
+	enemyRight.setAttribute('class', 'enemyRight');
+	enemyRight.y = ((x+1)*350)*-1;
+	enemyRight.style.top = enemyRight.y+'px';
+	enemyRight.style.left = Math.floor(Math.random()*400)+ 'px';
+	gameAreaRight.appendChild(enemyRight);
+ }
+
   //Adding Player Cars
   let carPlayer1 = document.createElement("div");
   carPlayer1.setAttribute("class", "carPlayer1");
@@ -94,33 +180,22 @@ function gamePlay() {
 
   //Adding movement to the player cars
   if (player1.ready) {
-    if ((keys.w || keys.W) && player1.y > 0) {
-      player1.y -= player1.speed;
-    }
-    if ((keys.s || keys.S) && player1.y < areaLeft.bottom - 70) {
-      player1.y += player1.speed;
-    }
-    if ((keys.a || keys.A) && player1.x > 0) {
-      player1.x -= player1.speed;
-    }
-    if ((keys.d || keys.D) && player1.x < areaLeft.width - 50) {
-      player1.x += player1.speed;
-    }
+    if ((keys.w || keys.W) && player1.y > 0) player1.y -= player1.speed;
+    if ((keys.s || keys.S) && player1.y < areaLeft.bottom - 70) player1.y += player1.speed;
+    if ((keys.a || keys.A) && player1.x > 0) player1.x -= player1.speed;
+    if ((keys.d || keys.D) && player1.x < areaLeft.width - 50) player1.x += player1.speed;
   }
 
   if (player2.ready) {
-    if (keys.ArrowUp && player2.y > 0) {
-      player2.y -= player2.speed;
-    }
-    if (keys.ArrowDown && player2.y < areaRight.bottom - 70) {
-      player2.y += player2.speed;
-    }
-    if (keys.ArrowLeft && player2.x > 0) {
-      player2.x -= player2.speed;
-    }
-    if (keys.ArrowRight && player2.x < areaRight.width - 50) {
-      player2.x += player2.speed;
-    }
+    if (keys.ArrowUp && player2.y > 0) player2.y -= player2.speed;
+    if (keys.ArrowDown && player2.y < areaRight.bottom - 70) player2.y += player2.speed;
+    if (keys.ArrowLeft && player2.x > 0) player2.x -= player2.speed;
+    if (keys.ArrowRight && player2.x < areaRight.width - 50) player2.x += player2.speed;
+  }
+
+  if(player1.ready && player2.ready) {
+  	moveLines();
+  	moveEnemy();
   }
 
   //Changing the position of cars
@@ -146,3 +221,5 @@ function keyUp(e) {
   // console.log(e.key);
   // console.log(keys);
 }
+
+
