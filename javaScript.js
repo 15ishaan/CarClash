@@ -99,6 +99,7 @@ function moveStartLine() {
   startLineLeft.style.bottom = startLinePosition + "px";
   startLineRight.style.bottom = startLinePosition + "px";
 }
+
 //moveFinishLine() adds movement to finish lines
 let finishLinePosition = -500;
 function moveFinishLine(carPlayer1, carPlayer2) {
@@ -119,6 +120,35 @@ function moveFinishLine(carPlayer1, carPlayer2) {
   finishLineRight.style.top = finishLinePosition + "px";
 }
 
+isfuelcollect(car, fuel) {
+	let carRect = car.getBoundingClientRect();
+	let fuelRect = fuel.getBoundingClientRect();
+	return (carRect.left < fuelRect.right || carRect.right < fuelRect.left || carRect.bottom < fuelRect.top || carRect.top < fuelRect.bottom);
+}
+
+function moveFuel(carPlayer1, carPlayer2){
+	let fuelLeft = document.querySelectorAll(".fuelLeft");
+	let fuelRight = document.querySelectorAll(".fuelRight");
+
+	fuelLeft.forEach(function (item) {
+	if(isfuelcollect(carPlayer1, item)){
+	 console.log("collected");
+	}
+
+    item.y += player1.speed;
+    item.style.top = item.y + "px";
+  });
+
+	fuelRight.forEach(function (item) {
+	if(isfuelcollect(carPlayer2, item)){
+	 console.log("collected");
+	}
+
+    item.y += player2.speed;
+    item.style.top = item.y + "px";
+    if(item.getBoundingClientRect() == carPlayer2.getBoundingClientRect()) console.log("collected");
+  });
+}
 //moveEnemy() adds movemment to enemy cars
 function moveEnemy() {
   let enemyLeft = document.querySelectorAll(".enemyLeft");
@@ -215,6 +245,21 @@ function start() {
     enemyRight.style.left = Math.floor(Math.random() * 400) + "px";
     gameAreaRight.appendChild(enemyRight);
   }
+  for (x = 0; x < 3; x++) {
+  	let fuelLeft = document.createElement("div");
+    fuelLeft.setAttribute("class", "fuelLeft");
+    fuelLeft.y = (x + 1) * 1000 * -1;
+    fuelLeft.style.top = fuelLeft.y + "px";
+    fuelLeft.style.left = Math.floor(Math.random() * 400) + "px";
+    gameAreaLeft.appendChild(fuelLeft);
+
+    let fuelRight = document.createElement("div");
+    fuelRight.setAttribute("class", "fuelRight");
+    fuelRight.y = (x + 1) * 1000 * -1;
+    fuelRight.style.top = fuelRight.y + "px";
+    fuelRight.style.left = Math.floor(Math.random() * 400) + "px";
+    gameAreaRight.appendChild(fuelRight);
+  }
 
   //Adding Player Cars
   let carPlayer1 = document.createElement("div");
@@ -247,6 +292,7 @@ function gamePlay() {
     moveEnemy();
     moveStartLine();
     moveFinishLine(carPlayer1, carPlayer2);
+    moveFuel(carPlayer1, carPlayer2);
   }
 
   //Adding movement to the player cars:
