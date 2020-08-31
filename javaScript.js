@@ -1,10 +1,12 @@
 const startScreen = document.querySelector(".startScreen");
 const gameAreaLeft = document.querySelector(".gameAreaLeft");
 const gameAreaRight = document.querySelector(".gameAreaRight");
+const playerStatsLeft = document.querySelector(".playerStatsLeft");
+const playerStatsRight = document.querySelector(".playerStatsRight");
 
 //Creating player object
-let player1 = { speed: 5 };
-let player2 = { speed: 5 };
+let player1 = { speed: 5, score: 0 };
+let player2 = { speed: 5, score: 0 };
 
 //Creating keys object to map the keys pressed
 let keys = {
@@ -29,7 +31,7 @@ document.addEventListener("keyup", keyUp);
 
 //Functions
 
-// fxns to check whether players race is finished:
+// fxn to check whether players race is finished:
 // Player1
 function player1RaceFinished(carPlayer1, finishLineLeft) {
   let carRect = carPlayer1.getBoundingClientRect();
@@ -43,6 +45,18 @@ function player2RaceFinished(carPlayer2, finishLineRight) {
   let finishLineRect = finishLineRight.getBoundingClientRect();
 
   return carRect.top < finishLineRect.top;
+}
+
+// fxn to check whether fuel is collected by players
+function isfuelcollect(car, fuel) {
+  let carRect = car.getBoundingClientRect();
+  let fuelRect = fuel.getBoundingClientRect();
+  return (
+    carRect.left < fuelRect.right ||
+    carRect.right < fuelRect.left ||
+    carRect.bottom < fuelRect.top ||
+    carRect.top < fuelRect.bottom
+  );
 }
 
 //moveLines() adds movemment to road stripes
@@ -120,33 +134,29 @@ function moveFinishLine(carPlayer1, carPlayer2) {
   finishLineRight.style.top = finishLinePosition + "px";
 }
 
-isfuelcollect(car, fuel) {
-	let carRect = car.getBoundingClientRect();
-	let fuelRect = fuel.getBoundingClientRect();
-	return (carRect.left < fuelRect.right || carRect.right < fuelRect.left || carRect.bottom < fuelRect.top || carRect.top < fuelRect.bottom);
-}
+// moveFuel() fxn adds fuel randomly on road
+function moveFuel(carPlayer1, carPlayer2) {
+  let fuelLeft = document.querySelectorAll(".fuelLeft");
+  let fuelRight = document.querySelectorAll(".fuelRight");
 
-function moveFuel(carPlayer1, carPlayer2){
-	let fuelLeft = document.querySelectorAll(".fuelLeft");
-	let fuelRight = document.querySelectorAll(".fuelRight");
-
-	fuelLeft.forEach(function (item) {
-	if(isfuelcollect(carPlayer1, item)){
-	 console.log("collected");
-	}
+  fuelLeft.forEach(function (item) {
+    if (isfuelcollect(carPlayer1, item)) {
+      console.log("collected");
+    }
 
     item.y += player1.speed;
     item.style.top = item.y + "px";
   });
 
-	fuelRight.forEach(function (item) {
-	if(isfuelcollect(carPlayer2, item)){
-	 console.log("collected");
-	}
+  fuelRight.forEach(function (item) {
+    if (isfuelcollect(carPlayer2, item)) {
+      console.log("collected");
+    }
 
     item.y += player2.speed;
     item.style.top = item.y + "px";
-    if(item.getBoundingClientRect() == carPlayer2.getBoundingClientRect()) console.log("collected");
+    if (item.getBoundingClientRect() == carPlayer2.getBoundingClientRect())
+      console.log("collected");
   });
 }
 //moveEnemy() adds movemment to enemy cars
@@ -180,6 +190,8 @@ function start() {
   startScreen.classList.add("hide");
   gameAreaRight.classList.remove("hide");
   gameAreaLeft.classList.remove("hide");
+  playerStatsLeft.classList.remove("hide");
+  playerStatsRight.classList.remove("hide");
 
   player1.ready = true;
   player2.ready = true;
@@ -245,8 +257,10 @@ function start() {
     enemyRight.style.left = Math.floor(Math.random() * 400) + "px";
     gameAreaRight.appendChild(enemyRight);
   }
+
+  // Generating fuel
   for (x = 0; x < 3; x++) {
-  	let fuelLeft = document.createElement("div");
+    let fuelLeft = document.createElement("div");
     fuelLeft.setAttribute("class", "fuelLeft");
     fuelLeft.y = (x + 1) * 1000 * -1;
     fuelLeft.style.top = fuelLeft.y + "px";
@@ -281,7 +295,7 @@ function start() {
 function gamePlay() {
   let areaLeft = gameAreaLeft.getBoundingClientRect();
   let carPlayer1 = document.querySelector(".carPlayer1");
-  //   console.log(areaLeft);
+  // console.log(areaLeft);
 
   let areaRight = gameAreaRight.getBoundingClientRect();
   let carPlayer2 = document.querySelector(".carPlayer2");
@@ -298,20 +312,20 @@ function gamePlay() {
   //Adding movement to the player cars:
   //Player1
   if (player1.ready) {
-    if ((keys.w || keys.W) && player1.y > 0) player1.y -= player1.speed;
+    if ((keys.w || keys.W) && player1.y > 70) player1.y -= player1.speed;
     if ((keys.s || keys.S) && player1.y < areaLeft.bottom - 70)
       player1.y += player1.speed;
     if ((keys.a || keys.A) && player1.x > 0) player1.x -= player1.speed;
-    if ((keys.d || keys.D) && player1.x < areaLeft.width - 50)
+    if ((keys.d || keys.D) && player1.x < areaLeft.width - 65)
       player1.x += player1.speed;
   }
   //Player2
   if (player2.ready) {
-    if (keys.ArrowUp && player2.y > 0) player2.y -= player2.speed;
+    if (keys.ArrowUp && player2.y > 70) player2.y -= player2.speed;
     if (keys.ArrowDown && player2.y < areaRight.bottom - 70)
       player2.y += player2.speed;
     if (keys.ArrowLeft && player2.x > 0) player2.x -= player2.speed;
-    if (keys.ArrowRight && player2.x < areaRight.width - 50)
+    if (keys.ArrowRight && player2.x < areaRight.width - 65)
       player2.x += player2.speed;
   }
 
