@@ -104,7 +104,7 @@ function moveLines() {
 }
 
 //moveStartLine() adds movement to finish lines
-let startLinePosition = 70;
+let startLinePosition = 120;
 function moveStartLine() {
   let startLineLeft = document.querySelector(".startLineLeft");
   let startLineRight = document.querySelector(".startLineRight");
@@ -295,7 +295,7 @@ function start() {
 function gamePlay() {
   let areaLeft = gameAreaLeft.getBoundingClientRect();
   let carPlayer1 = document.querySelector(".carPlayer1");
-  // console.log(areaLeft);
+  console.log(areaLeft);
 
   let areaRight = gameAreaRight.getBoundingClientRect();
   let carPlayer2 = document.querySelector(".carPlayer2");
@@ -316,7 +316,7 @@ function gamePlay() {
     if ((keys.s || keys.S) && player1.y < areaLeft.bottom - 70)
       player1.y += player1.speed;
     if ((keys.a || keys.A) && player1.x > 0) player1.x -= player1.speed;
-    if ((keys.d || keys.D) && player1.x < areaLeft.width - 65)
+    if ((keys.d || keys.D) && player1.x < areaLeft.width - 60)
       player1.x += player1.speed;
   }
   //Player2
@@ -325,7 +325,7 @@ function gamePlay() {
     if (keys.ArrowDown && player2.y < areaRight.bottom - 70)
       player2.y += player2.speed;
     if (keys.ArrowLeft && player2.x > 0) player2.x -= player2.speed;
-    if (keys.ArrowRight && player2.x < areaRight.width - 65)
+    if (keys.ArrowRight && player2.x < areaRight.width - 60)
       player2.x += player2.speed;
   }
 
