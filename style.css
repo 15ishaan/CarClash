@@ -96,7 +96,7 @@ body {
   background-repeat: no-repeat;
   background-size: 100%;
   position: absolute;
-  top: -500px; /*Change this value accordingly*/
+  top: -1000px; /*Change this value accordingly*/
 }
 .startLineRight {
   width: 100%;
@@ -167,15 +167,17 @@ body {
   right: 250px;
 }
 .fuelLeft {
-  width: 30px;
-  height: 30px;
-  background-color: yellow;
+  width: 60px;
+  height: 60px;
+  background: url("./img/fuel.png");
+  background-size: 100%;
   position: absolute;
 }
 .fuelRight {
-  width: 30px;
-  height: 30px;
-  background-color: yellow;
+  width: 60px;
+  height: 60px;
+  background: url("./img/fuel.png");
+  background-size: 100%;
   position: absolute;
 }
 .distanceRemainingPlayer1 {
