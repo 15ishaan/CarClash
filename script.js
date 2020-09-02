@@ -5,9 +5,11 @@ const gameAreaRight = document.querySelector(".gameAreaRight");
 const playerStatsLeft = document.querySelector(".playerStatsLeft");
 const playerStatsRight = document.querySelector(".playerStatsRight");
 const gameArea = document.querySelector(".gameArea");
+const scorePlayer1 = document.querySelector(".scorePlayer1");
+const scorePlayer2 = document.querySelector(".scorePlayer2");
 
 let startLinePosition = 140;
-let finishLinePosition = -1000;
+let finishLinePosition = -2000;
 
 //player objects
 let player1 = { speed: 5, score: 0 };
@@ -157,13 +159,13 @@ function moveFuel(carPlayer1, carPlayer2) {
 function fuelBar() {
   var val1 = document.querySelector(".fuelMeterLeft").value;
   if (val1 == 0) console.log("Player1 fuel Over!");
-  val1 -= 0.09;
-  var val1 = (document.querySelector(".fuelMeterLeft").value = val1);
+  val1 -= 0.15;
+  document.querySelector(".fuelMeterLeft").value = val1;
 
   var val2 = document.querySelector(".fuelMeterRight").value;
   if (val2 == 0) console.log("Player2 fuel Over!");
-  val2 -= 0.09;
-  var val2 = (document.querySelector(".fuelMeterRight").value = val2);
+  val2 -= 0.15;
+  document.querySelector(".fuelMeterRight").value = val2;
 }
 function moveEnemy() {
   let enemyLeft = document.querySelectorAll(".enemyLeft");
@@ -197,11 +199,13 @@ function moveEnemy() {
 }
 function fuelLeftCollected() {
   var val = document.querySelector(".fuelMeterLeft").value;
-  document.querySelector(".fuelMeterLeft").value = val + 3;
+  document.querySelector(".fuelMeterLeft").value = val + 2;
+  player1.score += 10;
 }
 function fuelRightCollected() {
   var val = document.querySelector(".fuelMeterRight").value;
-  document.querySelector(".fuelMeterRight").value = val + 3;
+  document.querySelector(".fuelMeterRight").value = val + 2;
+  player2.score += 10;
 }
 // functions for Game
 function start() {
@@ -278,7 +282,7 @@ function start() {
   }
 
   //fuel
-  for (x = 0; x < 3; x++) {
+  for (x = 0; x < 5; x++) {
     let fuelLeft = document.createElement("div");
     fuelLeft.setAttribute("class", "fuelLeft");
     fuelLeft.y = (x + 1) * 1500 * -1;
@@ -355,4 +359,11 @@ function gamePlay() {
   carPlayer2.style.left = player2.x + "px";
 
   window.requestAnimationFrame(gamePlay);
+  player1.score ++;
+  let ps1 = player1.score;
+  scorePlayer1.innerText = "Score: " + ps1;
+
+  player2.score ++;
+  let ps2 = player2.score;
+  scorePlayer2.innerText = "Score: " + ps2;
 }
