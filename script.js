@@ -14,6 +14,7 @@ const carPlayer1Orange = document.querySelector(".carPlayer1Orange");
 const carPlayer2Blue = document.querySelector(".carPlayer2Blue");
 const carPlayer2Lightblue = document.querySelector(".carPlayer2Lightblue");
 const carPlayer2Orange = document.querySelector(".carPlayer2Orange");
+
 let startLinePosition = 140;
 let finishLinePosition = -1000;
 
@@ -146,11 +147,10 @@ function moveStartLine() {
   startLineLeft.style.bottom = startLinePosition + "px";
   startLineRight.style.bottom = startLinePosition + "px";
 }
+
 function moveFinishLine(carPlayer1, carPlayer2) {
   let finishLineLeft = document.querySelector(".finishLineLeft");
   let finishLineRight = document.querySelector(".finishLineRight");
-  let distanceRight = document.querySelector(".distanceRemainingPlayer1");
-  let distanceLeft = document.querySelector(".distanceRemainingPlayer2");
 
   // Calling raceFinished() fxn to check whether player1's race is finished
   if (player1RaceFinished(carPlayer1, finishLineLeft)) {
@@ -165,14 +165,28 @@ function moveFinishLine(carPlayer1, carPlayer2) {
   finishLineLeft.style.top = finishLinePosition + "px";
   finishLineRight.style.top = finishLinePosition + "px";
 
-  let scorePlayer1 = document.querySelector(".scorePlayer1");
-  let scorePlayer2 = document.querySelector(".scorePlayer2");
+  // let scorePlayer1 = document.querySelector(".scorePlayer1");
+  // let scorePlayer2 = document.querySelector(".scorePlayer2");
 
-  distanceRight.innerHTML =
-    "Distance: " + (finishLinePosition / 1000) * -1 + "KM";
+  let distanceRemainLeft = 1000;
+  let distanceRemainRight = 1000;
+  let distanceRight = document.querySelector(".distanceRemainingPlayer1");
+  let distanceLeft = document.querySelector(".distanceRemainingPlayer2");
+
+  let carLeft = carPlayer1.getBoundingClientRect();
+  let carRight = carPlayer2.getBoundingClientRect();
+  let finishLeft = finishLineLeft.getBoundingClientRect();
+  let finishRight = finishLineRight.getBoundingClientRect();
+
+  distanceRemainLeft = finishLeft.top - carLeft.top;
+  distanceRemainRight = finishRight.top - carRight.top;
+
   distanceLeft.innerHTML =
-    "Distance: " + (finishLinePosition / 1000) * -1 + "KM";
+    "Distance: " + (distanceRemainLeft / 1000) * -1 + "KM";
+  distanceRight.innerHTML =
+    "Distance: " + (distanceRemainRight / 1000) * -1 + "KM";
 }
+
 function moveFuel(carPlayer1, carPlayer2) {
   let fuelLeft = document.querySelectorAll(".fuelLeft");
   let fuelRight = document.querySelectorAll(".fuelRight");
