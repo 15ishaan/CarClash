@@ -8,16 +8,58 @@ const gameArea = document.querySelector(".gameArea");
 const scorePlayer1 = document.querySelector(".scorePlayer1");
 const scorePlayer2 = document.querySelector(".scorePlayer2");
 
+const raceStart = document.querySelector(".playerReady");
+
+const carPlayer1Blue = document.querySelector(".carPlayer1Blue");
+const carPlayer1Lightblue = document.querySelector(".carPlayer1Lightblue");
+const carPlayer1Orange = document.querySelector(".carPlayer1Orange");
+const carPlayer2Blue = document.querySelector(".carPlayer2Blue");
+const carPlayer2Lightblue = document.querySelector(".carPlayer2Lightblue");
+const carPlayer2Orange = document.querySelector(".carPlayer2Orange");
 let startLinePosition = 140;
 let finishLinePosition = -2000;
 
 //player objects
 let player1 = { speed: 5, score: 0 };
 let player2 = { speed: 5, score: 0 };
+let player1CarChoice = "blue";
+let player2CarChoice = "orange";
 
 //keys and their functions
-let keys = {ArrowUp: false,ArrowDown: false,ArrowLeft: false,ArrowRight: false,w: false,s: false,a: false,d: false,W: false,S: false,A: false, D: false};
-startScreen.addEventListener("click", start);
+let keys = {
+  ArrowUp: false,
+  ArrowDown: false,
+  ArrowLeft: false,
+  ArrowRight: false,
+  w: false,
+  s: false,
+  a: false,
+  d: false,
+  W: false,
+  S: false,
+  A: false,
+  D: false,
+};
+raceStart.addEventListener("click", start);
+
+carPlayer1Blue.addEventListener("click", function () {
+  player1CarChoice = "blue";
+});
+carPlayer1Lightblue.addEventListener("click", function () {
+  player1CarChoice = "lightblue";
+});
+carPlayer1Orange.addEventListener("click", function () {
+  player1CarChoice = "orange";
+});
+carPlayer2Blue.addEventListener("click", function () {
+  player2CarChoice = "blue";
+});
+carPlayer2Lightblue.addEventListener("click", function () {
+  player2CarChoice = "lightblue";
+});
+carPlayer2Orange.addEventListener("click", function () {
+  player2CarChoice = "orange";
+});
 
 document.addEventListener("keydown", keyDown);
 function keyDown(e) {
@@ -30,6 +72,7 @@ function keyUp(e) {
   e.preventDefault();
   keys[e.key] = false;
 }
+
 //functions to check
 function player1RaceFinished(carPlayer1, finishLineLeft) {
   let carRect = carPlayer1.getBoundingClientRect();
@@ -267,7 +310,8 @@ function start() {
     enemyLeft.y = (x + 1) * 350 * -1;
     enemyLeft.style.top = enemyLeft.y + "px";
     enemyLeft.style.left = Math.floor(Math.random() * 400) + "px";
-    enemyLeft.style.background = "url(./img/enemy" + Math.floor(Math.random() * 7) + ".png)";
+    enemyLeft.style.background =
+      "url(./img/enemy" + Math.floor(Math.random() * 7) + ".png)";
     enemyLeft.style.backgroundSize = "100% 100%";
     gameAreaLeft.appendChild(enemyLeft);
 
@@ -276,7 +320,8 @@ function start() {
     enemyRight.y = (x + 1) * 350 * -1;
     enemyRight.style.top = enemyRight.y + "px";
     enemyRight.style.left = Math.floor(Math.random() * 400) + "px";
-    enemyRight.style.background = "url(./img/enemy" + Math.floor(Math.random() * 7) + ".png)";
+    enemyRight.style.background =
+      "url(./img/enemy" + Math.floor(Math.random() * 7) + ".png)";
     enemyRight.style.backgroundSize = "100% 100%";
     gameAreaRight.appendChild(enemyRight);
   }
@@ -301,10 +346,16 @@ function start() {
   //Player Cars
   let carPlayer1 = document.createElement("div");
   carPlayer1.setAttribute("class", "carPlayer1");
+  carPlayer1.style.background =
+    "url('./img/playercar-" + player1CarChoice + ".png')";
+  carPlayer1.style.backgroundSize = "100% 100%";
   gameAreaLeft.appendChild(carPlayer1);
 
   let carPlayer2 = document.createElement("div");
   carPlayer2.setAttribute("class", "carPlayer2");
+  carPlayer2.style.background =
+    "url('./img/playercar-" + player2CarChoice + ".png')";
+  carPlayer2.style.backgroundSize = "100% 100%";
   gameAreaRight.appendChild(carPlayer2);
 
   //Assigning positions for controlling movement
@@ -359,6 +410,7 @@ function gamePlay() {
   carPlayer2.style.left = player2.x + "px";
 
   window.requestAnimationFrame(gamePlay);
+
   player1.score ++;
   let ps1 = player1.score;
   scorePlayer1.innerText = "Score: " + ps1;
@@ -367,3 +419,4 @@ function gamePlay() {
   let ps2 = player2.score;
   scorePlayer2.innerText = "Score: " + ps2;
 }
+
