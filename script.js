@@ -1,53 +1,46 @@
+//initialising
 const startScreen = document.querySelector(".startScreen");
 const gameAreaLeft = document.querySelector(".gameAreaLeft");
 const gameAreaRight = document.querySelector(".gameAreaRight");
 const playerStatsLeft = document.querySelector(".playerStatsLeft");
 const playerStatsRight = document.querySelector(".playerStatsRight");
+const gameArea = document.querySelector(".gameArea");
 
-//Creating player object
+let startLinePosition = 140;
+let finishLinePosition = -1000;
+
+//player objects
 let player1 = { speed: 5, score: 0 };
 let player2 = { speed: 5, score: 0 };
 
-//Creating keys object to map the keys pressed
-let keys = {
-  ArrowUp: false,
-  ArrowDown: false,
-  ArrowLeft: false,
-  ArrowRight: false,
-  w: false,
-  s: false,
-  a: false,
-  d: false,
-  W: false,
-  S: false,
-  A: false,
-  D: false,
-};
-
-//EventListeners
+//keys and their functions
+let keys = {ArrowUp: false,ArrowDown: false,ArrowLeft: false,ArrowRight: false,w: false,s: false,a: false,d: false,W: false,S: false,A: false, D: false};
 startScreen.addEventListener("click", start);
+
 document.addEventListener("keydown", keyDown);
+function keyDown(e) {
+  e.preventDefault();
+  keys[e.key] = true;
+}
+
 document.addEventListener("keyup", keyUp);
-
-//Functions
-
-// fxn to check whether players race is finished:
-// Player1
+function keyUp(e) {
+  e.preventDefault();
+  keys[e.key] = false;
+}
+//functions to check
 function player1RaceFinished(carPlayer1, finishLineLeft) {
   let carRect = carPlayer1.getBoundingClientRect();
   let finishLineRect = finishLineLeft.getBoundingClientRect();
 
   return carRect.top < finishLineRect.top;
 }
-// Player2
 function player2RaceFinished(carPlayer2, finishLineRight) {
   let carRect = carPlayer2.getBoundingClientRect();
   let finishLineRect = finishLineRight.getBoundingClientRect();
 
   return carRect.top < finishLineRect.top;
 }
-
-// fxn to check whether fuel is collected by players
 function isfuelcollect(car, fuel) {
   let carRect = car.getBoundingClientRect();
   let fuelRect = fuel.getBoundingClientRect();
@@ -59,7 +52,7 @@ function isfuelcollect(car, fuel) {
   );
 }
 
-//moveLines() adds movemment to road stripes
+//functions to move
 function moveLines() {
   let roadLineLeft1 = document.querySelectorAll(".roadLineLeft1");
   let roadLineLeft2 = document.querySelectorAll(".roadLineLeft2");
@@ -102,9 +95,6 @@ function moveLines() {
     item.style.top = item.y + "px";
   });
 }
-
-//moveStartLine() adds movement to finish lines
-let startLinePosition = 140;
 function moveStartLine() {
   let startLineLeft = document.querySelector(".startLineLeft");
   let startLineRight = document.querySelector(".startLineRight");
@@ -113,9 +103,6 @@ function moveStartLine() {
   startLineLeft.style.bottom = startLinePosition + "px";
   startLineRight.style.bottom = startLinePosition + "px";
 }
-
-//moveFinishLine() adds movement to finish lines
-let finishLinePosition = -1000;
 function moveFinishLine(carPlayer1, carPlayer2) {
   let finishLineLeft = document.querySelector(".finishLineLeft");
   let finishLineRight = document.querySelector(".finishLineRight");
@@ -135,7 +122,6 @@ function moveFinishLine(carPlayer1, carPlayer2) {
   finishLineLeft.style.top = finishLinePosition + "px";
   finishLineRight.style.top = finishLinePosition + "px";
 
-  // Shows finish line distace in stats
   let scorePlayer1 = document.querySelector(".scorePlayer1");
   let scorePlayer2 = document.querySelector(".scorePlayer2");
 
@@ -144,8 +130,6 @@ function moveFinishLine(carPlayer1, carPlayer2) {
   distanceLeft.innerHTML =
     "Distance: " + (finishLinePosition / 1000) * -1 + "KM";
 }
-
-// moveFuel() fxn adds fuel randomly on road
 function moveFuel(carPlayer1, carPlayer2) {
   let fuelLeft = document.querySelectorAll(".fuelLeft");
   let fuelRight = document.querySelectorAll(".fuelRight");
@@ -170,7 +154,6 @@ function moveFuel(carPlayer1, carPlayer2) {
     item.style.top = item.y + "px";
   });
 }
-
 function fuelBar() {
   var val1 = document.querySelector(".fuelMeterLeft").value;
   if (val1 == 0) console.log("Player1 fuel Over!");
@@ -182,7 +165,6 @@ function fuelBar() {
   val2 -= 0.09;
   var val2 = (document.querySelector(".fuelMeterRight").value = val2);
 }
-//moveEnemy() adds movemment to enemy cars
 function moveEnemy() {
   let enemyLeft = document.querySelectorAll(".enemyLeft");
   let enemyRight = document.querySelectorAll(".enemyRight");
@@ -191,8 +173,8 @@ function moveEnemy() {
     if (item.y >= 700) {
       item.y = -300;
       item.style.left = Math.floor(Math.random() * 400) + "px";
-      item.style.backgroundImage =
-        "url('./img/enemy" + Math.floor(Math.random() * 7) + ".png')";
+      item.style.background =
+        "url(./img/enemy" + Math.floor(Math.random() * 7) + ".png)";
       item.style.backgroundSize = "100% 100%";
     }
 
@@ -204,8 +186,8 @@ function moveEnemy() {
     if (item.y >= 700) {
       item.y = -300;
       item.style.left = Math.floor(Math.random() * 400) + "px";
-      item.style.backgroundImage =
-        "url('./img/enemy" + Math.floor(Math.random() * 7) + ".png')";
+      item.style.background =
+        "url(./img/enemy" + Math.floor(Math.random() * 7) + ".png)";
       item.style.backgroundSize = "100% 100%";
     }
 
@@ -213,7 +195,6 @@ function moveEnemy() {
     item.style.top = item.y + "px";
   });
 }
-
 function fuelLeftCollected() {
   var val = document.querySelector(".fuelMeterLeft").value;
   document.querySelector(".fuelMeterLeft").value = val + 3;
@@ -222,19 +203,16 @@ function fuelRightCollected() {
   var val = document.querySelector(".fuelMeterRight").value;
   document.querySelector(".fuelMeterRight").value = val + 3;
 }
-// start() fxn will create playing area and then calls gameplay() fxn
+// functions for Game
 function start() {
   startScreen.classList.add("hide");
-  gameAreaRight.classList.remove("hide");
-  gameAreaLeft.classList.remove("hide");
-  playerStatsLeft.classList.remove("hide");
-  playerStatsRight.classList.remove("hide");
+  gameArea.classList.remove("hide");
 
   player1.ready = true;
   player2.ready = true;
   window.requestAnimationFrame(gamePlay);
 
-  //Generating stripes on road
+  //stripes
   for (x = 0; x < 5; x++) {
     let roadLineLeft1 = document.createElement("div");
     roadLineLeft1.setAttribute("class", "roadLineLeft1");
@@ -261,7 +239,7 @@ function start() {
     gameAreaRight.appendChild(roadLineRight2);
   }
 
-  // Generating Starting and Finish line
+  //Starting and Finish line
   let startLineLeft = document.createElement("div");
   startLineLeft.setAttribute("class", "startLineLeft");
   gameAreaLeft.appendChild(startLineLeft);
@@ -278,14 +256,15 @@ function start() {
   finishLineRight.setAttribute("class", "finishLineRight");
   gameAreaRight.appendChild(finishLineRight);
 
-  // Generating enemy cars
+  // Enemy cars
   for (x = 0; x < 3; x++) {
     let enemyLeft = document.createElement("div");
     enemyLeft.setAttribute("class", "enemyLeft");
     enemyLeft.y = (x + 1) * 350 * -1;
     enemyLeft.style.top = enemyLeft.y + "px";
     enemyLeft.style.left = Math.floor(Math.random() * 400) + "px";
-    enemyLeft.style.backgroundImage = "url('./img/enemy" + Math.floor(Math.random() * 7) + ".png')";
+    enemyLeft.style.background = "url(./img/enemy" + Math.floor(Math.random() * 7) + ".png)";
+    enemyLeft.style.backgroundSize = "100% 100%";
     gameAreaLeft.appendChild(enemyLeft);
 
     let enemyRight = document.createElement("div");
@@ -293,11 +272,12 @@ function start() {
     enemyRight.y = (x + 1) * 350 * -1;
     enemyRight.style.top = enemyRight.y + "px";
     enemyRight.style.left = Math.floor(Math.random() * 400) + "px";
-    enemyRight.style.backgroundImage = "url('./img/enemy" + Math.floor(Math.random() * 7) + ".png')";
+    enemyRight.style.background = "url(./img/enemy" + Math.floor(Math.random() * 7) + ".png)";
+    enemyRight.style.backgroundSize = "100% 100%";
     gameAreaRight.appendChild(enemyRight);
   }
 
-  // Generating fuel
+  //fuel
   for (x = 0; x < 3; x++) {
     let fuelLeft = document.createElement("div");
     fuelLeft.setAttribute("class", "fuelLeft");
@@ -314,7 +294,7 @@ function start() {
     gameAreaRight.appendChild(fuelRight);
   }
 
-  //Adding Player Cars
+  //Player Cars
   let carPlayer1 = document.createElement("div");
   carPlayer1.setAttribute("class", "carPlayer1");
   gameAreaLeft.appendChild(carPlayer1);
@@ -337,7 +317,6 @@ function gamePlay() {
 
   let areaRight = gameAreaRight.getBoundingClientRect();
   let carPlayer2 = document.querySelector(".carPlayer2");
-  //   console.log(areaRight);
 
   if (player1.ready && player2.ready) {
     moveLines();
@@ -376,18 +355,4 @@ function gamePlay() {
   carPlayer2.style.left = player2.x + "px";
 
   window.requestAnimationFrame(gamePlay);
-}
-
-//Functions for registering the keys pressed
-function keyDown(e) {
-  e.preventDefault();
-  keys[e.key] = true;
-  // console.log(e.key);
-  // console.log(keys);
-}
-function keyUp(e) {
-  e.preventDefault();
-  keys[e.key] = false;
-  // console.log(e.key);
-  // console.log(keys);
 }

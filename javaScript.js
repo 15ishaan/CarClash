@@ -104,7 +104,7 @@ function moveLines() {
 }
 
 //moveStartLine() adds movement to finish lines
-let startLinePosition = 140;
+let startLinePosition = 120;
 function moveStartLine() {
   let startLineLeft = document.querySelector(".startLineLeft");
   let startLineRight = document.querySelector(".startLineRight");
@@ -119,8 +119,6 @@ let finishLinePosition = -1000;
 function moveFinishLine(carPlayer1, carPlayer2) {
   let finishLineLeft = document.querySelector(".finishLineLeft");
   let finishLineRight = document.querySelector(".finishLineRight");
-  let distanceRight = document.querySelector(".distanceRemainingPlayer1");
-  let distanceLeft = document.querySelector(".distanceRemainingPlayer2");
 
   // Calling raceFinished() fxn to check whether player1's race is finished
   if (player1RaceFinished(carPlayer1, finishLineLeft)) {
@@ -134,15 +132,6 @@ function moveFinishLine(carPlayer1, carPlayer2) {
   finishLinePosition++; //Change this value at the end!!!!
   finishLineLeft.style.top = finishLinePosition + "px";
   finishLineRight.style.top = finishLinePosition + "px";
-
-  // Shows finish line distace in stats
-  let scorePlayer1 = document.querySelector(".scorePlayer1");
-  let scorePlayer2 = document.querySelector(".scorePlayer2");
-
-  distanceRight.innerHTML =
-    "Distance: " + (finishLinePosition / 1000) * -1 + "KM";
-  distanceLeft.innerHTML =
-    "Distance: " + (finishLinePosition / 1000) * -1 + "KM";
 }
 
 // moveFuel() fxn adds fuel randomly on road
@@ -152,7 +141,7 @@ function moveFuel(carPlayer1, carPlayer2) {
 
   fuelLeft.forEach(function (item) {
     if (isfuelcollect(carPlayer1, item)) {
-      item.style.visibility = "hidden";
+    	item.style.visibility = "hidden";
       fuelLeftCollected();
     }
 
@@ -162,7 +151,7 @@ function moveFuel(carPlayer1, carPlayer2) {
 
   fuelRight.forEach(function (item) {
     if (isfuelcollect(carPlayer2, item)) {
-      item.style.visibility = "hidden";
+    	item.style.visibility = "hidden";
       fuelRightCollected();
     }
 
@@ -171,16 +160,16 @@ function moveFuel(carPlayer1, carPlayer2) {
   });
 }
 
-function fuelBar() {
-  var val1 = document.querySelector(".fuelMeterLeft").value;
-  if (val1 == 0) console.log("Player1 fuel Over!");
-  val1 -= 0.09;
-  var val1 = (document.querySelector(".fuelMeterLeft").value = val1);
+function fuelBar(){
+	var val1 = document.querySelector(".fuelMeterLeft").value;
+	if(val1 == 0) console.log("Player1 fuel Over!")
+	val1 -= 0.09;
+	var val1 = document.querySelector(".fuelMeterLeft").value = val1;
 
-  var val2 = document.querySelector(".fuelMeterRight").value;
-  if (val2 == 0) console.log("Player2 fuel Over!");
-  val2 -= 0.09;
-  var val2 = (document.querySelector(".fuelMeterRight").value = val2);
+	var val2 = document.querySelector(".fuelMeterRight").value;
+	if(val2 == 0) console.log("Player2 fuel Over!")
+	val2 -= 0.09;
+	var val2 = document.querySelector(".fuelMeterRight").value = val2;
 }
 //moveEnemy() adds movemment to enemy cars
 function moveEnemy() {
@@ -191,9 +180,6 @@ function moveEnemy() {
     if (item.y >= 700) {
       item.y = -300;
       item.style.left = Math.floor(Math.random() * 400) + "px";
-      item.style.backgroundImage =
-        "url('./img/enemy" + Math.floor(Math.random() * 7) + ".png')";
-      item.style.backgroundSize = "100% 100%";
     }
 
     item.y += player1.speed;
@@ -204,9 +190,6 @@ function moveEnemy() {
     if (item.y >= 700) {
       item.y = -300;
       item.style.left = Math.floor(Math.random() * 400) + "px";
-      item.style.backgroundImage =
-        "url('./img/enemy" + Math.floor(Math.random() * 7) + ".png')";
-      item.style.backgroundSize = "100% 100%";
     }
 
     item.y += player2.speed;
@@ -214,13 +197,14 @@ function moveEnemy() {
   });
 }
 
-function fuelLeftCollected() {
-  var val = document.querySelector(".fuelMeterLeft").value;
-  document.querySelector(".fuelMeterLeft").value = val + 3;
+function fuelLeftCollected(){
+
+	var val = document.querySelector(".fuelMeterLeft").value;
+	document.querySelector(".fuelMeterLeft").value = val+3;
 }
-function fuelRightCollected() {
-  var val = document.querySelector(".fuelMeterRight").value;
-  document.querySelector(".fuelMeterRight").value = val + 3;
+function fuelRightCollected(){
+	var val = document.querySelector(".fuelMeterRight").value;
+	document.querySelector(".fuelMeterRight").value = val+3;
 }
 // start() fxn will create playing area and then calls gameplay() fxn
 function start() {
@@ -285,7 +269,6 @@ function start() {
     enemyLeft.y = (x + 1) * 350 * -1;
     enemyLeft.style.top = enemyLeft.y + "px";
     enemyLeft.style.left = Math.floor(Math.random() * 400) + "px";
-    enemyLeft.style.backgroundImage = "url('./img/enemy" + Math.floor(Math.random() * 7) + ".png')";
     gameAreaLeft.appendChild(enemyLeft);
 
     let enemyRight = document.createElement("div");
@@ -293,7 +276,6 @@ function start() {
     enemyRight.y = (x + 1) * 350 * -1;
     enemyRight.style.top = enemyRight.y + "px";
     enemyRight.style.left = Math.floor(Math.random() * 400) + "px";
-    enemyRight.style.backgroundImage = "url('./img/enemy" + Math.floor(Math.random() * 7) + ".png')";
     gameAreaRight.appendChild(enemyRight);
   }
 
@@ -352,7 +334,7 @@ function gamePlay() {
   //Player1
   if (player1.ready) {
     if ((keys.w || keys.W) && player1.y > 70) player1.y -= player1.speed;
-    if ((keys.s || keys.S) && player1.y < areaLeft.bottom - 92)
+    if ((keys.s || keys.S) && player1.y < areaLeft.bottom - 70)
       player1.y += player1.speed;
     if ((keys.a || keys.A) && player1.x > 0) player1.x -= player1.speed;
     if ((keys.d || keys.D) && player1.x < areaLeft.width - 60)
@@ -361,7 +343,7 @@ function gamePlay() {
   //Player2
   if (player2.ready) {
     if (keys.ArrowUp && player2.y > 70) player2.y -= player2.speed;
-    if (keys.ArrowDown && player2.y < areaRight.bottom - 92)
+    if (keys.ArrowDown && player2.y < areaRight.bottom - 70)
       player2.y += player2.speed;
     if (keys.ArrowLeft && player2.x > 0) player2.x -= player2.speed;
     if (keys.ArrowRight && player2.x < areaRight.width - 60)
