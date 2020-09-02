@@ -10,23 +10,57 @@
     <link rel="stylesheet" type="text/css" href="./css/style.css" />
   </head>
   <body>
-     <div class="startScreen">
+    <div class="startScreen">
       <div class="Player1">
         <h1>Player 1</h1>
         <h3>Instructions :</h3>
-        <p>Use w,a,s,d to move.<br>
-          Avoid enemy cars.<br> Collect fuel.<br>
-          Whoever finishes first wins.<br>
-          Click anywhere to Start.</p>
+        <p>
+          &nbsp; Use w,a,s,d to move.<br />
+          &nbsp; Avoid enemy cars.<br />
+          &nbsp; Collect fuel.<br />
+          &nbsp; Whoever finishes first wins.<br />
+          &nbsp; Click anywhere to Start.
+        </p>
+        <h4 class="chooseCarLeft">Choose your car :</h4>
+        <picture
+          ><img src="./img/playercar-blue.png" class="carPlayer1Blue" />
+        </picture>
+        <picture
+          ><img
+            src="./img/playercar-lightblue.png"
+            class="carPlayer1Lightblue"
+          />
+        </picture>
+        <picture
+          ><img src="./img/playercar-orange.png" class="carPlayer1Orange" />
+        </picture>
       </div>
       <div class="Player2">
-        <h1>Player 2</h1><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-        <h3>Instructions :</h3>
-         <p>Use Arrow Keys to move.<br>
-          Avoid enemy cars.<br> Collect fuel.<br>
-          Whoever finishes first wins.<br>
-          Click anywhere to Start.</p>
+        <h1>Player 2</h1>
+        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+        <h3>Instructions:</h3>
+        <p>
+          &nbsp; Use Arrow Keys to move.<br />
+          &nbsp; Avoid enemy cars.<br />
+          &nbsp; Collect fuel.<br />
+          &nbsp; Whoever finishes first wins.<br />
+          &nbsp; Click anywhere to Start.
+        </p>
+        <h4 class="chooseCarRight">Choose your car :</h4>
+        <picture
+          ><img src="./img/playercar-blue.png" class="carPlayer2Blue" />
+        </picture>
+        <picture
+          ><img
+            src="./img/playercar-lightblue.png"
+            class="carPlayer2Lightblue"
+          />
+        </picture>
+        <picture
+          ><img src="./img/playercar-orange.png" class="carPlayer2Orange" />
+        </picture>
       </div>
+      <p class="playerReady">Press to start</p>
     </div>
     <div class="gameArea hide">
       <div class="gameAreaLeft"></div>
@@ -36,15 +70,15 @@
         <progress class="fuelMeterLeft" value="100" max="100"></progress>
         <p class="fuelLabel">Player1's Fuel</p>
         <div class="distanceRemainingPlayer1">Distance:</div>
-        <div class="scorePlayer1">Score:</div>
       </div>
+      <div class="scorePlayer1">Score:</div>
 
       <div class="playerStatsRight">
         <progress class="fuelMeterRight" value="100" max="100"></progress>
         <p class="fuelLabel">Player2's Fuel</p>
         <div class="distanceRemainingPlayer2">Distance:</div>
-        <div class="scorePlayer2">Score:</div>
       </div>
+      <div class="scorePlayer1">Score:</div>
     </div>
     <script src="script.js"></script>
   </body>
