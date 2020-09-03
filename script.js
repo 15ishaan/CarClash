@@ -13,9 +13,7 @@ const life3Left = document.querySelector(".life3Left");
 const life1Right = document.querySelector(".life1Right");
 const life2Right = document.querySelector(".life2Right");
 const life3Right = document.querySelector(".life3Right");
-
 const raceStart = document.querySelector(".playerReady");
-
 const carPlayer1Blue = document.querySelector(".carPlayer1Blue");
 const carPlayer1Lightblue = document.querySelector(".carPlayer1Lightblue");
 const carPlayer1Orange = document.querySelector(".carPlayer1Orange");
@@ -23,14 +21,16 @@ const carPlayer2Blue = document.querySelector(".carPlayer2Blue");
 const carPlayer2Lightblue = document.querySelector(".carPlayer2Lightblue");
 const carPlayer2Orange = document.querySelector(".carPlayer2Orange");
 
-let startLinePosition = 140;
-let finishLinePosition = -2000;
+let startLineLeftPosition = 140;
+let startLineRightPosition = 140;
+let finishLineLeftPosition = -2000;
+let finishLineRightPosition = -2000;
 let collisionCount1 = 0;
 let collisionCount2 = 0;
 
 //player objects
-let player1 = { speed: 5, score: 0 };
-let player2 = { speed: 5, score: 0 };
+let player1 = { speed: 10, score: 0 };
+let player2 = { speed: 10, score: 0 };
 let player1CarChoice = "blue";
 let player2CarChoice = "orange";
 
@@ -109,15 +109,18 @@ function isEnemycollide(a, b)
 {
   aRect = a.getBoundingClientRect();
   bRect = b.getBoundingClientRect();
-  return !((aRect.top > bRect.bottom) || (aRect.right < bRect.left) || (aRect.left > bRect.right) || (aRect.bottom < bRect.top));
+  return !(
+    (aRect.top > bRect.bottom) || 
+    (aRect.right < bRect.left) || 
+    (aRect.left > bRect.right) || 
+    (aRect.bottom < bRect.top)
+  );
 }
 
 //functions to move
-function moveLines() {
+function moveLeftLines() {
   let roadLineLeft1 = document.querySelectorAll(".roadLineLeft1");
   let roadLineLeft2 = document.querySelectorAll(".roadLineLeft2");
-  let roadLineRight1 = document.querySelectorAll(".roadLineRight1");
-  let roadLineRight2 = document.querySelectorAll(".roadLineRight2");
 
   roadLineLeft1.forEach(function (item) {
     if (item.y >= 800) {
@@ -136,6 +139,10 @@ function moveLines() {
     item.y += player1.speed;
     item.style.top = item.y + "px";
   });
+}
+function moveRightLines() {
+  let roadLineRight1 = document.querySelectorAll(".roadLineRight1");
+  let roadLineRight2 = document.querySelectorAll(".roadLineRight2");
 
   roadLineRight1.forEach(function (item) {
     if (item.y >= 800) {
@@ -155,57 +162,65 @@ function moveLines() {
     item.style.top = item.y + "px";
   });
 }
-function moveStartLine() {
+function moveLeftStartLine() {
   let startLineLeft = document.querySelector(".startLineLeft");
+
+  startLineLeftPosition--; //Change this value at the end!!!!
+  startLineLeft.style.bottom = startLineLeftPosition + "px";
+}
+function moveRightStartLine() {
   let startLineRight = document.querySelector(".startLineRight");
 
-  startLinePosition--; //Change this value at the end!!!!
-  startLineLeft.style.bottom = startLinePosition + "px";
-  startLineRight.style.bottom = startLinePosition + "px";
+  startLineRightPosition--; //Change this value at the end!!!!
+  startLineRight.style.bottom = startLineRightPosition + "px";
 }
-
-function moveFinishLine(carPlayer1, carPlayer2) {
+function moveLeftFinishLine(carPlayer1) {
   let finishLineLeft = document.querySelector(".finishLineLeft");
-  let finishLineRight = document.querySelector(".finishLineRight");
-
   // Calling raceFinished() fxn to check whether player1's race is finished
   if (player1RaceFinished(carPlayer1, finishLineLeft)) {
     console.log("Player1 Race Finished");
   }
 
-  if (player2RaceFinished(carPlayer2, finishLineRight)) {
-    console.log("Player2 Race Finished");
-  }
-
-  finishLinePosition++; //Change this value at the end!!!!
-  finishLineLeft.style.top = finishLinePosition + "px";
-  finishLineRight.style.top = finishLinePosition + "px";
-
+  finishLineLeftPosition++; //Change this value at the end!!!!
+  finishLineLeft.style.top = finishLineLeftPosition + "px";
   // let scorePlayer1 = document.querySelector(".scorePlayer1");
   // let scorePlayer2 = document.querySelector(".scorePlayer2");
 
   let distanceRemainLeft = 1000;
-  let distanceRemainRight = 1000;
   let distanceLeft = document.querySelector(".distanceRemainingPlayer1");
-  let distanceRight = document.querySelector(".distanceRemainingPlayer2");
 
   let carLeft = carPlayer1.getBoundingClientRect();
-  let carRight = carPlayer2.getBoundingClientRect();
   let finishLeft = finishLineLeft.getBoundingClientRect();
-  let finishRight = finishLineRight.getBoundingClientRect();
 
   distanceRemainLeft = finishLeft.top - carLeft.top;
-  distanceRemainRight = finishRight.top - carRight.top;
 
   distanceLeft.innerHTML =
     "Distance: " + (distanceRemainLeft / 100) * -1 + "KM";
+}
+function moveRightFinishLine(carPlayer2) {
+  let finishLineRight = document.querySelector(".finishLineRight");
+
+  // Calling raceFinished() fxn to check whether player1's race is finished
+  if (player2RaceFinished(carPlayer2, finishLineRight)) {
+    console.log("Player2 Race Finished");
+  }
+
+  finishLineRightPosition++; //Change this value at the end!!!!
+  finishLineRight.style.top = finishLineRightPosition + "px";
+
+  let distanceRemainRight = 1000;
+  let distanceRight = document.querySelector(".distanceRemainingPlayer2");
+
+  let carRight = carPlayer2.getBoundingClientRect();
+  let finishRight = finishLineRight.getBoundingClientRect();
+
+  distanceRemainRight = finishRight.top - carRight.top;
+
   distanceRight.innerHTML =
     "Distance: " + (distanceRemainRight / 100) * -1 + "KM";
 }
-
-function moveFuel(carPlayer1, carPlayer2) {
+function moveLeftFuel(carPlayer1) {
   let fuelLeft = document.querySelectorAll(".fuelLeft");
-  let fuelRight = document.querySelectorAll(".fuelRight");
 
   fuelLeft.forEach(function (item) {
     if (isfuelcollect(carPlayer1, item)) {
@@ -216,6 +231,9 @@ function moveFuel(carPlayer1, carPlayer2) {
     item.y += player1.speed;
     item.style.top = item.y + "px";
   });
+}
+function moveRightFuel(carPlayer2) {
+  let fuelRight = document.querySelectorAll(".fuelRight");
 
   fuelRight.forEach(function (item) {
     if (isfuelcollect(carPlayer2, item)) {
@@ -227,20 +245,20 @@ function moveFuel(carPlayer1, carPlayer2) {
     item.style.top = item.y + "px";
   });
 }
-function fuelBar() {
+function fuelLeftBar() {
   var val1 = document.querySelector(".fuelMeterLeft").value;
  // if (val1 == 0) console.log("Player1 fuel Over!");
-  val1 -= 0.15;
+  val1 -= 0.3;
   document.querySelector(".fuelMeterLeft").value = val1;
-
+}
+function fuelRightBar() {
   var val2 = document.querySelector(".fuelMeterRight").value;
   //if (val2 == 0) console.log("Player2 fuel Over!");
-  val2 -= 0.15;
+  val2 -= 0.3;
   document.querySelector(".fuelMeterRight").value = val2;
 }
-function moveEnemy(carPlayer1,carPlayer2) {
+function moveLeftEnemy(carPlayer1) {
   let enemyLeft = document.querySelectorAll(".enemyLeft");
-  let enemyRight = document.querySelectorAll(".enemyRight");
 
   enemyLeft.forEach(function (item) {
     if(isEnemycollide(carPlayer1, item)){
@@ -258,6 +276,9 @@ function moveEnemy(carPlayer1,carPlayer2) {
     item.y += player1.speed;
     item.style.top = item.y + "px";
   });
+}
+function moveRightEnemy(carPlayer2) {
+ let enemyRight = document.querySelectorAll(".enemyRight");
 
   enemyRight.forEach(function (item) {
     if(isEnemycollide(carPlayer2, item)){
@@ -278,13 +299,13 @@ function moveEnemy(carPlayer1,carPlayer2) {
 }
 function fuelLeftCollected() {
   var val = document.querySelector(".fuelMeterLeft").value;
-  document.querySelector(".fuelMeterLeft").value = val + 2;
-  player1.score += 10;
+  document.querySelector(".fuelMeterLeft").value = val + 4;
+  player1.score += 100;
 }
 function fuelRightCollected() {
   var val = document.querySelector(".fuelMeterRight").value;
-  document.querySelector(".fuelMeterRight").value = val + 2;
-  player2.score += 10;
+  document.querySelector(".fuelMeterRight").value = val + 4;
+  player2.score += 100;
 }
 // functions for Game
 function start() {
@@ -363,7 +384,7 @@ function start() {
   }
 
   //fuel
-  for (x = 0; x < 5; x++) {
+  for (x = 0; x < 20; x++) {
     let fuelLeft = document.createElement("div");
     fuelLeft.setAttribute("class", "fuelLeft");
     fuelLeft.y = (x + 1) * 1500 * -1;
@@ -408,20 +429,21 @@ function gamePlay() {
 
   let areaRight = gameAreaRight.getBoundingClientRect();
   let carPlayer2 = document.querySelector(".carPlayer2");
-
-  if (player1.ready && player2.ready) {
-    moveLines();
-    moveEnemy(carPlayer1, carPlayer2);
-    moveStartLine();
-    moveFinishLine(carPlayer1, carPlayer2);
-    moveFuel(carPlayer1, carPlayer2);
-    fuelBar();
-  }
-
   //Adding movement to the player cars:
   //Player1
   if (player1.ready) {
-    if ((keys.w || keys.W) && player1.y > 70) player1.y -= player1.speed;
+    if ((keys.w || keys.W) && player1.y > 70) 
+      {
+        moveLeftLines();
+        moveLeftEnemy(carPlayer1);
+        moveLeftStartLine();
+        moveLeftFinishLine(carPlayer1);
+        moveLeftFuel(carPlayer1);
+        fuelLeftBar();
+        player1.score++;
+        let ps1 = player1.score;
+        scorePlayer1.innerText = "Score: " + ps1;
+      }
     if ((keys.s || keys.S) && player1.y < areaLeft.bottom - 92)
       player1.y += player1.speed;
     if ((keys.a || keys.A) && player1.x > 0) player1.x -= player1.speed;
@@ -430,7 +452,18 @@ function gamePlay() {
   }
   //Player2
   if (player2.ready) {
-    if (keys.ArrowUp && player2.y > 70) player2.y -= player2.speed;
+    if (keys.ArrowUp && player2.y > 70) 
+      {
+        moveRightLines();
+        moveRightEnemy(carPlayer2);
+        moveRightStartLine();
+        moveRightFinishLine(carPlayer2);
+        moveRightFuel(carPlayer2);
+        fuelRightBar();
+        player2.score++;
+        let ps2 = player2.score;
+        scorePlayer2.innerText = "Score: " + ps2;
+      }
     if (keys.ArrowDown && player2.y < areaRight.bottom - 92)
       player2.y += player2.speed;
     if (keys.ArrowLeft && player2.x > 0) player2.x -= player2.speed;
@@ -446,12 +479,4 @@ function gamePlay() {
   carPlayer2.style.left = player2.x + "px";
 
   window.requestAnimationFrame(gamePlay);
-
-  player1.score++;
-  let ps1 = player1.score;
-  scorePlayer1.innerText = "Score: " + ps1;
-
-  player2.score++;
-  let ps2 = player2.score;
-  scorePlayer2.innerText = "Score: " + ps2;
 }
