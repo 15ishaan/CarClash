@@ -8,7 +8,7 @@ body {
   overflow: hidden;
   font-family: "Squada One", cursive;
   font-size: 20px;
-  background: url("../img/bg.png");
+  background: url("../img/bg2.png");
   background-size: 100% 100%;
 }
 .hide {
@@ -59,6 +59,21 @@ body {
   text-align: center;
   background-color: palegreen;
   clip-path: polygon(0 0, 100% 0, 92% 50%, 100% 100%, 0 100%);
+}
+.life1Left{
+  position: absolute;
+  top: 220px;
+  left: 89px;
+}
+.life2Left{
+  position: absolute;
+  top: 220px;
+  left: 45px;
+}
+.life3Left{
+  position: absolute;
+  top: 220px;
+  left: 1px;
 }
 .playerStatsRight {
   font-size: 20px;
@@ -113,6 +128,21 @@ body {
   text-align: center;
   background-color: palegreen;
   clip-path: polygon(0 0, 100% 0, 92% 50%, 100% 100%, 0 100%);
+}
+.life1Right{
+  position: absolute;
+  top: 220px;
+  right: 114px;
+}
+.life2Right{
+  position: absolute;
+  top: 220px;
+  right: 70px;
+}
+.life3Right{
+  position: absolute;
+  top: 220px;
+  right: 26px;
 }
 .roadLineLeft1 {
   height: 100px;

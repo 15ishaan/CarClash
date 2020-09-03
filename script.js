@@ -7,6 +7,12 @@ const playerStatsRight = document.querySelector(".playerStatsRight");
 const gameArea = document.querySelector(".gameArea");
 const scorePlayer1 = document.querySelector(".scorePlayer1");
 const scorePlayer2 = document.querySelector(".scorePlayer2");
+const life1Left = document.querySelector(".life1Left");
+const life2Left = document.querySelector(".life2Left");
+const life3Left = document.querySelector(".life3Left");
+const life1Right = document.querySelector(".life1Right");
+const life2Right = document.querySelector(".life2Right");
+const life3Right = document.querySelector(".life3Right");
 
 const raceStart = document.querySelector(".playerReady");
 
@@ -19,6 +25,8 @@ const carPlayer2Orange = document.querySelector(".carPlayer2Orange");
 
 let startLinePosition = 140;
 let finishLinePosition = -2000;
+let collisionCount1 = 0;
+let collisionCount2 = 0;
 
 //player objects
 let player1 = { speed: 5, score: 0 };
@@ -96,6 +104,12 @@ function isfuelcollect(car, fuel) {
     carRect.bottom < fuelRect.top ||
     carRect.top > fuelRect.bottom
   );
+}
+function isEnemycollide(a, b)
+{
+  aRect = a.getBoundingClientRect();
+  bRect = b.getBoundingClientRect();
+  return !((aRect.top > bRect.bottom) || (aRect.right < bRect.left) || (aRect.left > bRect.right) || (aRect.bottom < bRect.top));
 }
 
 //functions to move
@@ -215,22 +229,26 @@ function moveFuel(carPlayer1, carPlayer2) {
 }
 function fuelBar() {
   var val1 = document.querySelector(".fuelMeterLeft").value;
-  if (val1 == 0) console.log("Player1 fuel Over!");
+ // if (val1 == 0) console.log("Player1 fuel Over!");
   val1 -= 0.15;
   document.querySelector(".fuelMeterLeft").value = val1;
 
   var val2 = document.querySelector(".fuelMeterRight").value;
-  if (val2 == 0) console.log("Player2 fuel Over!");
+  //if (val2 == 0) console.log("Player2 fuel Over!");
   val2 -= 0.15;
   document.querySelector(".fuelMeterRight").value = val2;
 }
-function moveEnemy() {
+function moveEnemy(carPlayer1,carPlayer2) {
   let enemyLeft = document.querySelectorAll(".enemyLeft");
   let enemyRight = document.querySelectorAll(".enemyRight");
 
   enemyLeft.forEach(function (item) {
+    if(isEnemycollide(carPlayer1, item)){
+        collisionCount1 += 1;
+        document.querySelector(".life1Left").src = "./img/lifeOver.png";
+      }
     if (item.y >= 700) {
-      item.y = -300;
+      item.y = -50;
       item.style.left = Math.floor(Math.random() * 400) + "px";
       item.style.background =
         "url(./img/enemy" + Math.floor(Math.random() * 7) + ".png)";
@@ -242,8 +260,12 @@ function moveEnemy() {
   });
 
   enemyRight.forEach(function (item) {
+    if(isEnemycollide(carPlayer2, item)){
+      collisionCount2 += 1;
+      document.querySelector(".life1Right").src = "./img/lifeOver.png";
+    }
     if (item.y >= 700) {
-      item.y = -300;
+      item.y = -50;
       item.style.left = Math.floor(Math.random() * 400) + "px";
       item.style.background =
         "url(./img/enemy" + Math.floor(Math.random() * 7) + ".png)";
@@ -321,7 +343,7 @@ function start() {
   for (x = 0; x < 3; x++) {
     let enemyLeft = document.createElement("div");
     enemyLeft.setAttribute("class", "enemyLeft");
-    enemyLeft.y = (x + 1) * 350 * -1;
+    enemyLeft.y = (x + 1) * 200 * -1;
     enemyLeft.style.top = enemyLeft.y + "px";
     enemyLeft.style.left = Math.floor(Math.random() * 400) + "px";
     enemyLeft.style.background =
@@ -331,7 +353,7 @@ function start() {
 
     let enemyRight = document.createElement("div");
     enemyRight.setAttribute("class", "enemyRight");
-    enemyRight.y = (x + 1) * 350 * -1;
+    enemyRight.y = (x + 1) * 200 * -1;
     enemyRight.style.top = enemyRight.y + "px";
     enemyRight.style.left = Math.floor(Math.random() * 400) + "px";
     enemyRight.style.background =
@@ -389,7 +411,7 @@ function gamePlay() {
 
   if (player1.ready && player2.ready) {
     moveLines();
-    moveEnemy();
+    moveEnemy(carPlayer1, carPlayer2);
     moveStartLine();
     moveFinishLine(carPlayer1, carPlayer2);
     moveFuel(carPlayer1, carPlayer2);
