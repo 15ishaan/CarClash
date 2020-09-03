@@ -172,8 +172,8 @@ function moveFinishLine(carPlayer1, carPlayer2) {
 
   let distanceRemainLeft = 1000;
   let distanceRemainRight = 1000;
-  let distanceRight = document.querySelector(".distanceRemainingPlayer1");
-  let distanceLeft = document.querySelector(".distanceRemainingPlayer2");
+  let distanceLeft = document.querySelector(".distanceRemainingPlayer1");
+  let distanceRight = document.querySelector(".distanceRemainingPlayer2");
 
   let carLeft = carPlayer1.getBoundingClientRect();
   let carRight = carPlayer2.getBoundingClientRect();
@@ -184,9 +184,9 @@ function moveFinishLine(carPlayer1, carPlayer2) {
   distanceRemainRight = finishRight.top - carRight.top;
 
   distanceLeft.innerHTML =
-    "Distance: " + (distanceRemainLeft / 1000) * -1 + "KM";
+    "Distance: " + (distanceRemainLeft / 100) * -1 + "KM";
   distanceRight.innerHTML =
-    "Distance: " + (distanceRemainRight / 1000) * -1 + "KM";
+    "Distance: " + (distanceRemainRight / 100) * -1 + "KM";
 }
 
 function moveFuel(carPlayer1, carPlayer2) {
@@ -425,12 +425,11 @@ function gamePlay() {
 
   window.requestAnimationFrame(gamePlay);
 
-  player1.score ++;
+  player1.score++;
   let ps1 = player1.score;
   scorePlayer1.innerText = "Score: " + ps1;
 
-  player2.score ++;
+  player2.score++;
   let ps2 = player2.score;
   scorePlayer2.innerText = "Score: " + ps2;
 }
-
