@@ -17,56 +17,102 @@ body {
 .playerStatsLeft {
   font-size: 20px;
   position: absolute;
-  top: 180px;
-  left: 20px;
+  top: 170px;
+  left: 60px;
 }
 .fuelMeterLeft {
   -webkit-appearance: none;
   width: 150px;
   height: 40px;
-  border: 1px solid whitesmoke;
+  border: 1px solid rgb(92, 86, 86);
   transform: rotate(-90deg);
 }
 .fuelMeterLeft::-webkit-progress-bar {
   background: rgb(233, 226, 226);
 }
 .fuelMeterLeft::-webkit-progress-value {
-  background: linear-gradient(to top, #00c6fb 0%, #005bea 100%);
+  background: linear-gradient(to bottom, #323232 0%, #3f3f3f 40%, #1c1c1c 150%),
+    linear-gradient(
+      to top,
+      rgba(255, 255, 255, 0.4) 0%,
+      rgba(0, 0, 0, 0.25) 200%
+    );
+  background-blend-mode: multiply;
+}
+.distanceRemainingPlayer1 {
+  font-size: 20px;
+  position: absolute;
+  top: 135px;
+  left: -40px;
+  width: 200px;
+  background-color: palegreen;
+  padding: 10px 20px;
+  clip-path: polygon(0 0, 100% 0, 92% 50%, 100% 100%, 0 100%);
 }
 .scorePlayer1 {
-  /* font-size: 20px; */
+  font-size: 20px;
   position: absolute;
-  top: 10px;
-  left: 5px;
+  top: 25px;
+  left: 20px;
+  padding: 10px 20px;
+  width: 200px;
+  text-align: center;
+  background-color: palegreen;
+  clip-path: polygon(0 0, 100% 0, 92% 50%, 100% 100%, 0 100%);
 }
 .playerStatsRight {
   font-size: 20px;
   position: absolute;
-  top: 90px;
-  right: 40px;
+  top: 170px;
+  right: 26px;
 }
 .fuelMeterRight {
   -webkit-appearance: none;
   width: 150px;
   height: 40px;
-  border: 1px solid whitesmoke;
+  border: 1px solid rgb(92, 86, 86);
   transform: rotate(-90deg);
 }
 .fuelMeterRight::-webkit-progress-bar {
   background: rgb(233, 226, 226);
 }
 .fuelMeterRight::-webkit-progress-value {
-  background: linear-gradient(to top, #00c6fb 0%, #005bea 100%);
+  background: linear-gradient(to bottom, #323232 0%, #3f3f3f 40%, #1c1c1c 150%),
+    linear-gradient(
+      to top,
+      rgba(255, 255, 255, 0.4) 0%,
+      rgba(0, 0, 0, 0.25) 200%
+    );
+  background-blend-mode: multiply;
+}
+.distanceRemainingPlayer2 {
+  font-size: 20px;
+  position: absolute;
+  top: 135px;
+  right: 0px;
+  width: 200px;
+  background-color: palegreen;
+  padding: 10px 20px;
+  clip-path: polygon(0 0, 100% 0, 92% 50%, 100% 100%, 0 100%);
 }
 .fuelLabel {
-  /* font-size: 15px; */
-  transform: rotate(-90deg) translate(47px, -45px);
+  text-align: center;
+  font-size: 21px;
+  padding: 5px 8px;
+  background-color: palegreen;
+  clip-path: polygon(0 0, 100% 0, 97% 50%, 100% 100%, 0 100%, 3% 50%);
+  transform: rotate(-90deg) translate(37px, -55px);
 }
 .scorePlayer2 {
-  /* font-size: 20px; */
+  font-size: 20px;
   position: absolute;
-  top: 180px;
-  right: 75px;
+  top: 25px;
+  right: 23px;
+  padding: 10px 20px;
+  width: 200px;
+  text-align: center;
+  background-color: palegreen;
+  clip-path: polygon(0 0, 100% 0, 92% 50%, 100% 100%, 0 100%);
 }
 .roadLineLeft1 {
   height: 100px;
@@ -99,7 +145,7 @@ body {
 .startLineLeft {
   width: 100%;
   height: 35px;
-  background: url(../img/linestart.png);
+  background: url("../img/linestart.png");
   background-repeat: no-repeat;
   background-size: 100% 100%;
   position: absolute;
@@ -108,7 +154,7 @@ body {
 .finishLineLeft {
   width: 100%;
   height: 35px;
-  background: url(../img/linefinish.png);
+  background: url("../img/linefinish.png");
   background-repeat: no-repeat;
   background-size: 100% 100%;
   position: absolute;
@@ -191,16 +237,6 @@ body {
   background: url("../img/fuel.png");
   background-size: 100%;
   position: absolute;
-}
-.distanceRemainingPlayer1 {
-  font-size: 20px;
-  position: absolute;
-  top: 135px;
-}
-.distanceRemainingPlayer2 {
-  font-size: 20px;
-  position: absolute;
-  top: 135px;
 }
 .startScreen {
   background: url("../img/startScreen.jpg");
@@ -345,7 +381,8 @@ body {
   background-size: 201%;
   border-radius: 3px;
   padding: 10px 20px;
-  transition: all 0.5s;
+  box-shadow: 2px 2px 4px black;
+  transition: all 0.3s;
   cursor: pointer;
 }
 .playerReady:hover {
