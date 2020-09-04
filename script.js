@@ -1,19 +1,23 @@
 //initialising
 const startScreen = document.querySelector(".startScreen");
+const gameArea = document.querySelector(".gameArea");
+const endScreen = document.querySelector(".endScreen");
+
 const gameAreaLeft = document.querySelector(".gameAreaLeft");
 const gameAreaRight = document.querySelector(".gameAreaRight");
 const playerStatsLeft = document.querySelector(".playerStatsLeft");
 const playerStatsRight = document.querySelector(".playerStatsRight");
-const gameArea = document.querySelector(".gameArea");
+
 const scorePlayer1 = document.querySelector(".scorePlayer1");
 const scorePlayer2 = document.querySelector(".scorePlayer2");
+
 const life1Left = document.querySelector(".life1Left");
 const life2Left = document.querySelector(".life2Left");
 const life3Left = document.querySelector(".life3Left");
 const life1Right = document.querySelector(".life1Right");
 const life2Right = document.querySelector(".life2Right");
 const life3Right = document.querySelector(".life3Right");
-const raceStart = document.querySelector(".playerReady");
+
 const carPlayer1Blue = document.querySelector(".carPlayer1Blue");
 const carPlayer1Lightblue = document.querySelector(".carPlayer1Lightblue");
 const carPlayer1Orange = document.querySelector(".carPlayer1Orange");
@@ -21,12 +25,23 @@ const carPlayer2Blue = document.querySelector(".carPlayer2Blue");
 const carPlayer2Lightblue = document.querySelector(".carPlayer2Lightblue");
 const carPlayer2Orange = document.querySelector(".carPlayer2Orange");
 
+const raceStart = document.querySelector(".playerReady");
+const restartRace = document.querySelector(".restart");
+
 let startLineLeftPosition = 140;
 let startLineRightPosition = 140;
 let finishLineLeftPosition = -2000;
 let finishLineRightPosition = -2000;
 let collisionCount1 = 0;
 let collisionCount2 = 0;
+
+let lineScorePlayer1 = 0;
+let fuelScorePlayer1 = 0;
+let carCollisonCountPlayer1 = 0;
+
+let lineScorePlayer2 = 0;
+let fuelScorePlayer2 = 0;
+let carCollisonCountPlayer2 = 0;
 
 //player objects
 let player1 = { speed: 10, score: 0 };
@@ -49,25 +64,45 @@ let keys = {
   A: false,
   D: false,
 };
+
+// EventListeners
 raceStart.addEventListener("click", start);
 
 carPlayer1Blue.addEventListener("click", function () {
   player1CarChoice = "blue";
+  carPlayer1Blue.style.transform = "scale(1.3)";
+  carPlayer1Lightblue.style.transform = "scale(0.9)";
+  carPlayer1Orange.style.transform = "scale(0.9)";
 });
 carPlayer1Lightblue.addEventListener("click", function () {
   player1CarChoice = "lightblue";
+  carPlayer1Blue.style.transform = "scale(0.9)";
+  carPlayer1Lightblue.style.transform = "scale(1.3)";
+  carPlayer1Orange.style.transform = "scale(0.9)";
 });
 carPlayer1Orange.addEventListener("click", function () {
   player1CarChoice = "orange";
+  carPlayer1Blue.style.transform = "scale(0.9)";
+  carPlayer1Lightblue.style.transform = "scale(0.9)";
+  carPlayer1Orange.style.transform = "scale(1.3)";
 });
 carPlayer2Blue.addEventListener("click", function () {
   player2CarChoice = "blue";
+  carPlayer2Blue.style.transform = "scale(1.3)";
+  carPlayer2Lightblue.style.transform = "scale(0.9)";
+  carPlayer2Orange.style.transform = "scale(0.9)";
 });
 carPlayer2Lightblue.addEventListener("click", function () {
   player2CarChoice = "lightblue";
+  carPlayer2Blue.style.transform = "scale(0.9)";
+  carPlayer2Lightblue.style.transform = "scale(1.3)";
+  carPlayer2Orange.style.transform = "scale(0.9)";
 });
 carPlayer2Orange.addEventListener("click", function () {
   player2CarChoice = "orange";
+  carPlayer2Blue.style.transform = "scale(0.9)";
+  carPlayer2Lightblue.style.transform = "scale(0.9)";
+  carPlayer2Orange.style.transform = "scale(1.3)";
 });
 
 document.addEventListener("keydown", keyDown);
@@ -82,6 +117,11 @@ function keyUp(e) {
   keys[e.key] = false;
 }
 
+restartRace.addEventListener("click", function () {
+  // startScreen.classList.remove("hide");
+  // endScreen.classList.add("hide");
+  location.reload(true);
+});
 //functions to check
 function player1RaceFinished(carPlayer1, finishLineLeft) {
   let carRect = carPlayer1.getBoundingClientRect();
@@ -105,15 +145,14 @@ function isfuelcollect(car, fuel) {
     carRect.top > fuelRect.bottom
   );
 }
-function isEnemycollide(a, b)
-{
+function isEnemycollide(a, b) {
   aRect = a.getBoundingClientRect();
   bRect = b.getBoundingClientRect();
   return !(
-    (aRect.top > bRect.bottom) || 
-    (aRect.right < bRect.left) || 
-    (aRect.left > bRect.right) || 
-    (aRect.bottom < bRect.top)
+    aRect.top > bRect.bottom ||
+    aRect.right < bRect.left ||
+    aRect.left > bRect.right ||
+    aRect.bottom < bRect.top
   );
 }
 
@@ -140,6 +179,7 @@ function moveLeftLines() {
     item.style.top = item.y + "px";
   });
 }
+
 function moveRightLines() {
   let roadLineRight1 = document.querySelectorAll(".roadLineRight1");
   let roadLineRight2 = document.querySelectorAll(".roadLineRight2");
@@ -162,31 +202,31 @@ function moveRightLines() {
     item.style.top = item.y + "px";
   });
 }
+
 function moveLeftStartLine() {
   let startLineLeft = document.querySelector(".startLineLeft");
 
-  startLineLeftPosition--; //Change this value at the end!!!!
+  startLineLeftPosition--;
   startLineLeft.style.bottom = startLineLeftPosition + "px";
 }
+
 function moveRightStartLine() {
   let startLineRight = document.querySelector(".startLineRight");
 
-  startLineRightPosition--; //Change this value at the end!!!!
+  startLineRightPosition--;
   startLineRight.style.bottom = startLineRightPosition + "px";
 }
+
 function moveLeftFinishLine(carPlayer1) {
   let finishLineLeft = document.querySelector(".finishLineLeft");
-  // Calling raceFinished() fxn to check whether player1's race is finished
   if (player1RaceFinished(carPlayer1, finishLineLeft)) {
-    console.log("Player1 Race Finished");
+    player1.ready = false;
+    gameOver();
   }
 
-  finishLineLeftPosition++; //Change this value at the end!!!!
+  finishLineLeftPosition++;
   finishLineLeft.style.top = finishLineLeftPosition + "px";
-  // let scorePlayer1 = document.querySelector(".scorePlayer1");
-  // let scorePlayer2 = document.querySelector(".scorePlayer2");
 
-  let distanceRemainLeft = 1000;
   let distanceLeft = document.querySelector(".distanceRemainingPlayer1");
 
   let carLeft = carPlayer1.getBoundingClientRect();
@@ -202,23 +242,24 @@ function moveRightFinishLine(carPlayer2) {
 
   // Calling raceFinished() fxn to check whether player1's race is finished
   if (player2RaceFinished(carPlayer2, finishLineRight)) {
-    console.log("Player2 Race Finished");
+    player2.ready = false;
+    gameOver();
   }
 
-  finishLineRightPosition++; //Change this value at the end!!!!
+  finishLineRightPosition++;
   finishLineRight.style.top = finishLineRightPosition + "px";
 
-  let distanceRemainRight = 1000;
   let distanceRight = document.querySelector(".distanceRemainingPlayer2");
 
   let carRight = carPlayer2.getBoundingClientRect();
   let finishRight = finishLineRight.getBoundingClientRect();
 
-  distanceRemainRight = finishRight.top - carRight.top;
+  let distanceRemainRight = finishRight.top - carRight.top;
 
   distanceRight.innerHTML =
     "Distance: " + (distanceRemainRight / 100) * -1 + "KM";
 }
+
 function moveLeftFuel(carPlayer1) {
   let fuelLeft = document.querySelectorAll(".fuelLeft");
 
@@ -232,6 +273,7 @@ function moveLeftFuel(carPlayer1) {
     item.style.top = item.y + "px";
   });
 }
+
 function moveRightFuel(carPlayer2) {
   let fuelRight = document.querySelectorAll(".fuelRight");
 
@@ -245,26 +287,41 @@ function moveRightFuel(carPlayer2) {
     item.style.top = item.y + "px";
   });
 }
+
 function fuelLeftBar() {
   var val1 = document.querySelector(".fuelMeterLeft").value;
- // if (val1 == 0) console.log("Player1 fuel Over!");
+  if (!val1) {
+    player1.ready = false;
+    gameOver();
+  }
   val1 -= 0.3;
   document.querySelector(".fuelMeterLeft").value = val1;
 }
+
 function fuelRightBar() {
   var val2 = document.querySelector(".fuelMeterRight").value;
-  //if (val2 == 0) console.log("Player2 fuel Over!");
+  if (!val2) {
+    player2.ready = false;
+    gameOver();
+  }
   val2 -= 0.3;
   document.querySelector(".fuelMeterRight").value = val2;
 }
+
 function moveLeftEnemy(carPlayer1) {
   let enemyLeft = document.querySelectorAll(".enemyLeft");
 
   enemyLeft.forEach(function (item) {
-    if(isEnemycollide(carPlayer1, item)){
-        collisionCount1 += 1;
-        document.querySelector(".life1Left").src = "./img/lifeOver.png";
+    if (isEnemycollide(carPlayer1, item)) {
+      collisionCount1++;
+      player1.score -= 15;
+      carCollisonCountPlayer1++;
+      if (collisionCount1 == 45) {
+        player1.ready = false;
+        gameOver();
       }
+      document.querySelector(".life1Left").src = "./img/lifeOver.png";
+    }
     if (item.y >= 700) {
       item.y = -50;
       item.style.left = Math.floor(Math.random() * 400) + "px";
@@ -277,12 +334,19 @@ function moveLeftEnemy(carPlayer1) {
     item.style.top = item.y + "px";
   });
 }
+
 function moveRightEnemy(carPlayer2) {
- let enemyRight = document.querySelectorAll(".enemyRight");
+  let enemyRight = document.querySelectorAll(".enemyRight");
 
   enemyRight.forEach(function (item) {
-    if(isEnemycollide(carPlayer2, item)){
-      collisionCount2 += 1;
+    if (isEnemycollide(carPlayer2, item)) {
+      collisionCount2++;
+      player2.score -= 15;
+      carCollisonCountPlayer2++;
+      if (collisionCount2 == 45) {
+        player2.ready = false;
+        gameOver();
+      }
       document.querySelector(".life1Right").src = "./img/lifeOver.png";
     }
     if (item.y >= 700) {
@@ -297,16 +361,20 @@ function moveRightEnemy(carPlayer2) {
     item.style.top = item.y + "px";
   });
 }
+
 function fuelLeftCollected() {
   var val = document.querySelector(".fuelMeterLeft").value;
   document.querySelector(".fuelMeterLeft").value = val + 4;
-  player1.score += 100;
+  fuelScorePlayer1 += 5;
+  player1.score += 5;
 }
 function fuelRightCollected() {
   var val = document.querySelector(".fuelMeterRight").value;
   document.querySelector(".fuelMeterRight").value = val + 4;
-  player2.score += 100;
+  fuelScorePlayer2 += 5;
+  player2.score += 5;
 }
+
 // functions for Game
 function start() {
   startScreen.classList.add("hide");
@@ -429,41 +497,41 @@ function gamePlay() {
 
   let areaRight = gameAreaRight.getBoundingClientRect();
   let carPlayer2 = document.querySelector(".carPlayer2");
+
   //Adding movement to the player cars:
   //Player1
   if (player1.ready) {
-    if ((keys.w || keys.W) && player1.y > 70) 
-      {
-        moveLeftLines();
-        moveLeftEnemy(carPlayer1);
-        moveLeftStartLine();
-        moveLeftFinishLine(carPlayer1);
-        moveLeftFuel(carPlayer1);
-        fuelLeftBar();
-        player1.score++;
-        let ps1 = player1.score;
-        scorePlayer1.innerText = "Score: " + ps1;
-      }
+    if ((keys.w || keys.W) && player1.y > 70) {
+      moveLeftLines();
+      moveLeftEnemy(carPlayer1);
+      moveLeftStartLine();
+      moveLeftFinishLine(carPlayer1);
+      moveLeftFuel(carPlayer1);
+      fuelLeftBar();
+      player1.score++;
+      lineScorePlayer1++;
+      scorePlayer1.innerText = "Score: " + player1.score;
+    }
     if ((keys.s || keys.S) && player1.y < areaLeft.bottom - 92)
       player1.y += player1.speed;
     if ((keys.a || keys.A) && player1.x > 0) player1.x -= player1.speed;
     if ((keys.d || keys.D) && player1.x < areaLeft.width - 60)
       player1.x += player1.speed;
   }
+
   //Player2
   if (player2.ready) {
-    if (keys.ArrowUp && player2.y > 70) 
-      {
-        moveRightLines();
-        moveRightEnemy(carPlayer2);
-        moveRightStartLine();
-        moveRightFinishLine(carPlayer2);
-        moveRightFuel(carPlayer2);
-        fuelRightBar();
-        player2.score++;
-        let ps2 = player2.score;
-        scorePlayer2.innerText = "Score: " + ps2;
-      }
+    if (keys.ArrowUp && player2.y > 70) {
+      moveRightLines();
+      moveRightEnemy(carPlayer2);
+      moveRightStartLine();
+      moveRightFinishLine(carPlayer2);
+      moveRightFuel(carPlayer2);
+      fuelRightBar();
+      player2.score++;
+      lineScorePlayer2++;
+      scorePlayer2.innerText = "Score: " + player2.score;
+    }
     if (keys.ArrowDown && player2.y < areaRight.bottom - 92)
       player2.y += player2.speed;
     if (keys.ArrowLeft && player2.x > 0) player2.x -= player2.speed;
@@ -479,4 +547,49 @@ function gamePlay() {
   carPlayer2.style.left = player2.x + "px";
 
   window.requestAnimationFrame(gamePlay);
+}
+
+// gameOver fxn
+function gameOver() {
+  gameArea.classList.add("hide");
+  endScreen.classList.remove("hide");
+
+  let lapTimePlayer1 = document.querySelector(".laptimePlayer1");
+  let fuelCollectedPlayer1 = document.querySelector(".fuelcollectedPlayer1");
+  let carCollisionPlayer1 = document.querySelector(".carCollisionPlayer1");
+  let totalPlayer1 = document.querySelector(".totalPlayer1");
+
+  let lapTimePlayer2 = document.querySelector(".laptimePlayer2");
+  let fuelCollectedPlayer2 = document.querySelector(".fuelcollectedPlayer2");
+  let carCollisionPlayer2 = document.querySelector(".carCollisionPlayer2");
+  let totalPlayer2 = document.querySelector(".totalPlayer2");
+
+  let result = document.querySelector(".result");
+
+  lapTimePlayer1.innerHTML = "Lap Time: " + lineScorePlayer1;
+  fuelCollectedPlayer1.innerHTML =
+    "Fuel Collected: " + fuelScorePlayer1 + " litre";
+  carCollisionPlayer1.innerHTML = "Damage to Car: " + carCollisonCountPlayer1;
+
+  lapTimePlayer2.innerHTML = "Lap Time: " + lineScorePlayer2;
+  fuelCollectedPlayer2.innerHTML =
+    "Fuel Collected: " + fuelScorePlayer2 + " litre";
+  carCollisionPlayer2.innerHTML = "Damage to Car: " + carCollisonCountPlayer2;
+
+  if (player1.score < 0) {
+    totalPlayer1.innerHTML = "&#127937; Score: 0";
+  } else {
+    totalPlayer1.innerHTML = "&#127937; Score: " + player1.score;
+  }
+  if (player1.score < 0) {
+    totalPlayer2.innerHTML = "&#127937; Score: 0";
+  } else {
+    totalPlayer2.innerHTML = "&#127937; Score: " + player2.score;
+  }
+
+  if (player1.score > player2.score) {
+    result.innerHTML = "&#127942; Player 2 Won";
+  } else {
+    result.innerHTML = "&#127942; Player 1 Won";
+  }
 }
