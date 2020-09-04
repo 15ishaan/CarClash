@@ -22,39 +22,37 @@ const carPlayer2Orange = document.querySelector(".carPlayer2Orange");
 const raceStart = document.querySelector(".playerReady");
 const restartRace = document.querySelector(".restart");
 
+let result = document.querySelector(".result");
+
 let startLineLeftPosition = 140;
 let startLineRightPosition = 140;
 let finishLineLeftPosition = -10000;
 let finishLineRightPosition = -10000;
-let collisionCount1 = 0;
-let collisionCount2 = 0;
 
 let lineScorePlayer1 = 0;
 let fuelScorePlayer1 = 0;
-let carCollisonCountPlayer1 = 0;
+let collisionCount1 = 0;
 
 let lineScorePlayer2 = 0;
 let fuelScorePlayer2 = 0;
-let carCollisonCountPlayer2 = 0;
+let collisionCount2 = 0;
+
+let player1CarChoice = "blue";
+let player2CarChoice = "orange";
 
 //player objects
 let player1 = { speed: 10, score: 0 };
 let player2 = { speed: 10, score: 0 };
-let player1CarChoice = "blue";
-let player2CarChoice = "orange";
 
 //keys and their functions
 let keys = {
   ArrowUp: false,
-  ArrowDown: false,
   ArrowLeft: false,
   ArrowRight: false,
   w: false,
-  s: false,
   a: false,
   d: false,
   W: false,
-  S: false,
   A: false,
   D: false,
 };
@@ -220,11 +218,16 @@ function moveRightStartLine() {
 function moveLeftFinishLine(carPlayer1) {
   let finishLineLeft = document.querySelector(".finishLineLeft");
   if (player1RaceFinished(carPlayer1, finishLineLeft)) {
-    player1.ready = false;// gameOver();
+    player1.ready = false; // gameOver();
     player2.ready = false;
     raceResultScreen.innerHTML =
-      "Player 1 has finished the race<br /><br />Press anywhere to view Scorecard"; //<---
+      "Player 1 has finished the race<br /><br />Press anywhere to view Scorecard";
+
+    player1.score += 200; //Bonus for finishing first
+    player2.score += 1063 - lineScorePlayer1; // normalizing score of player 2
+
     raceResult();
+    finsihLineCrossScore();
   }
 
   finishLineLeftPosition += player1.speed;
@@ -238,17 +241,22 @@ function moveLeftFinishLine(carPlayer1) {
   distanceRemainLeft = finishLeft.top - carLeft.top;
 
   distanceLeft.innerHTML =
-    "Distance: " + (distanceRemainLeft / 100) * -1 + "KM";
+    "Distance: " + (distanceRemainLeft / 1000) * -1 + "KM";
 }
 function moveRightFinishLine(carPlayer2) {
   let finishLineRight = document.querySelector(".finishLineRight");
 
   if (player2RaceFinished(carPlayer2, finishLineRight)) {
-    player2.ready = false;// gameOver();
+    player2.ready = false; // gameOver();
     player1.ready = false;
     raceResultScreen.innerHTML =
-      "Player 2 has Finished the race<br />Press anywhere to view Scorecard"; //<---
+      "Player 2 has Finished the race<br />Press anywhere to view Scorecard";
+
+    player2.score += 200; //Bonus for finishing first
+    player1.score += 1063 - lineScorePlayer1; // normalizing score of player 1
+
     raceResult();
+    finsihLineCrossScore();
   }
 
   finishLineRightPosition += player2.speed;
@@ -262,7 +270,7 @@ function moveRightFinishLine(carPlayer2) {
   let distanceRemainRight = finishRight.top - carRight.top;
 
   distanceRight.innerHTML =
-    "Distance: " + (distanceRemainRight / 100) * -1 + "KM";
+    "Distance: " + (distanceRemainRight / 1000) * -1 + "KM";
 }
 
 function moveLeftFuel(carPlayer1) {
@@ -296,11 +304,12 @@ function moveRightFuel(carPlayer2) {
 function fuelLeftBar() {
   var val1 = document.querySelector(".fuelMeterLeft").value;
   if (!val1) {
-    player1.ready = false; //gameOver();
-    player2.ready = false;
+    player1.ready = false;
+    player2.ready = false; //gameOver();
     raceResultScreen.innerHTML =
-      "Player 1 ran out of Fuel<br />Press anywhere to view Scorecard"; //<------
-    raceResult(); 
+      "Game Over<br />Player 1 ran out of Fuel<br />Hence, Player 1 disqualified<br />Press anywhere to view Scorecard";
+    raceResult();
+    result.innerHTML = "&#127942; Player 2 Won";
   }
   val1 -= 0.3;
   document.querySelector(".fuelMeterLeft").value = val1;
@@ -310,10 +319,11 @@ function fuelRightBar() {
   var val2 = document.querySelector(".fuelMeterRight").value;
   if (!val2) {
     player1.ready = false;
-    player2.ready = false;// gameOver();
+    player2.ready = false; // gameOver();
     raceResultScreen.innerHTML =
-      "Player 2 ran out of Fuel<br />Press anywhere to view Scorecard"; //<---
+      "Game Over!<br />Player 2 ran out of Fuel<br />Hence, Player 2 disqualified<br />Press anywhere to view Scorecard";
     raceResult();
+    result.innerHTML = "&#127942; Player 1 Won";
   }
   val2 -= 0.3;
   document.querySelector(".fuelMeterRight").value = val2;
@@ -325,13 +335,13 @@ function moveLeftEnemy(carPlayer1) {
   enemyLeft.forEach(function (item) {
     if (isEnemycollide(carPlayer1, item)) {
       collisionCount1++;
-      player1.score -= 15;
-      carCollisonCountPlayer1++;
+      player1.score -= 150;
       player1.ready = false;
       player2.ready = false; // gameOver();
       raceResultScreen.innerHTML =
-        "Player 1's Car is Damaged<br />Press anywhere to view scorecard"; //<---
+        "Game Over!<br />Player 1's Car crashed<br />Hence, Player 1 disqualified<br />Press anywhere to view scorecard";
       raceResult();
+      result.innerHTML = "&#127942; Player 2 Won";
     }
     if (item.y >= 700) {
       item.y = -50;
@@ -352,13 +362,13 @@ function moveRightEnemy(carPlayer2) {
   enemyRight.forEach(function (item) {
     if (isEnemycollide(carPlayer2, item)) {
       collisionCount2++;
-      player2.score -= 15;
-      carCollisonCountPlayer2++;
+      player2.score -= 150;
       player1.ready = false;
-      player2.ready = false;// gameOver();
+      player2.ready = false; // gameOver();
       raceResultScreen.innerHTML =
-        "Player 2's Car is Damaged<br />Press anywhere to view scorecard"; //<---
+        "Game Over!<br />Player 2's Car crashed<br />Hence, Player 2 disqualified<br />Press anywhere to view scorecard";
       raceResult();
+      result.innerHTML = "&#127942; Player 1 Won";
     }
     if (item.y >= 700) {
       item.y = -50;
@@ -573,21 +583,24 @@ function gameOver() {
   let carCollisionPlayer2 = document.querySelector(".carCollisionPlayer2");
   let totalPlayer2 = document.querySelector(".totalPlayer2");
 
-  let result = document.querySelector(".result");
-
   lapTimePlayer1.innerHTML = "Lap Time: " + lineScorePlayer1;
-  fuelCollectedPlayer1.innerHTML = "Fuel Collected: " + fuelScorePlayer1 + " litre";
-  carCollisionPlayer1.innerHTML = "Damage to Car: " + carCollisonCountPlayer1;
+  fuelCollectedPlayer1.innerHTML =
+    "Fuel Collected: " + fuelScorePlayer1 + " litre";
+  carCollisionPlayer1.innerHTML = "Damage to Car: " + collisionCount1;
 
   lapTimePlayer2.innerHTML = "Lap Time: " + lineScorePlayer2;
-  fuelCollectedPlayer2.innerHTML = "Fuel Collected: " + fuelScorePlayer2 + " litre";
-  carCollisionPlayer2.innerHTML = "Damage to Car: " + carCollisonCountPlayer2;
+  fuelCollectedPlayer2.innerHTML =
+    "Fuel Collected: " + fuelScorePlayer2 + " litre";
+  carCollisionPlayer2.innerHTML = "Damage to Car: " + collisionCount2;
 
   if (player1.score < 0) totalPlayer1.innerHTML = "&#127937; Score: 0";
   else totalPlayer1.innerHTML = "&#127937; Score: " + player1.score;
   if (player1.score < 0) totalPlayer2.innerHTML = "&#127937; Score: 0";
   else totalPlayer2.innerHTML = "&#127937; Score: " + player2.score;
+}
 
-  if (player1.score > player2.score) result.innerHTML = "&#127942; Player 1 Won";
+function finsihLineCrossScore() {
+  if (player1.score > player2.score)
+    result.innerHTML = "&#127942; Player 1 Won";
   else result.innerHTML = "&#127942; Player 2 Won";
 }
