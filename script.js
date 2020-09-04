@@ -1,6 +1,7 @@
 //initialising
 const startScreen = document.querySelector(".startScreen");
 const gameArea = document.querySelector(".gameArea");
+const raceResultScreen = document.querySelector(".raceResult");
 const endScreen = document.querySelector(".endScreen");
 
 const gameAreaLeft = document.querySelector(".gameAreaLeft");
@@ -117,11 +118,17 @@ function keyUp(e) {
   keys[e.key] = false;
 }
 
+raceResultScreen.addEventListener("click", function () {
+  gameArea.classList.add("hide");
+  raceResultScreen.classList.remove("hide");
+  endScreen.classList.remove("hide");
+  gameOver();
+});
+
 restartRace.addEventListener("click", function () {
-  // startScreen.classList.remove("hide");
-  // endScreen.classList.add("hide");
   location.reload(true);
 });
+
 //functions to check
 function player1RaceFinished(carPlayer1, finishLineLeft) {
   let carRect = carPlayer1.getBoundingClientRect();
@@ -221,7 +228,10 @@ function moveLeftFinishLine(carPlayer1) {
   let finishLineLeft = document.querySelector(".finishLineLeft");
   if (player1RaceFinished(carPlayer1, finishLineLeft)) {
     player1.ready = false;
-    gameOver();
+    // gameOver();
+    raceResultScreen.innerHTML =
+      "Player 1's finished the race<br /><br />Press anywhere to view scorecard"; //<---
+    raceResult();
   }
 
   finishLineLeftPosition++;
@@ -240,16 +250,20 @@ function moveLeftFinishLine(carPlayer1) {
 function moveRightFinishLine(carPlayer2) {
   let finishLineRight = document.querySelector(".finishLineRight");
 
-  // Calling raceFinished() fxn to check whether player1's race is finished
   if (player2RaceFinished(carPlayer2, finishLineRight)) {
     player2.ready = false;
-    gameOver();
+    // gameOver();
+    raceResultScreen.innerHTML =
+      "Player 2's Finished the race<br />Press anywhere to view scorecard"; //<---
+    raceResult();
   }
 
   finishLineRightPosition++;
   finishLineRight.style.top = finishLineRightPosition + "px";
 
-  let distanceRight = document.querySelector(".distanceRemainingPlayer2");
+  let distanceRight = document.querySelector(
+    ".distanceRemainingPlayer2<br />Press anywhere to view scorecard"
+  );
 
   let carRight = carPlayer2.getBoundingClientRect();
   let finishRight = finishLineRight.getBoundingClientRect();
@@ -292,7 +306,10 @@ function fuelLeftBar() {
   var val1 = document.querySelector(".fuelMeterLeft").value;
   if (!val1) {
     player1.ready = false;
-    gameOver();
+    raceResultScreen.innerHTML =
+      "Player 1's ran out of Fuel<br />Press anywhere to view scorecard"; //<------
+    raceResult();
+    // gameOver();
   }
   val1 -= 0.3;
   document.querySelector(".fuelMeterLeft").value = val1;
@@ -302,7 +319,10 @@ function fuelRightBar() {
   var val2 = document.querySelector(".fuelMeterRight").value;
   if (!val2) {
     player2.ready = false;
-    gameOver();
+    // gameOver();
+    raceResultScreen.innerHTML =
+      "Player 2's ran out of Fuel<br />Press anywhere to view scorecard"; //<---
+    raceResult();
   }
   val2 -= 0.3;
   document.querySelector(".fuelMeterRight").value = val2;
@@ -317,8 +337,10 @@ function moveLeftEnemy(carPlayer1) {
       player1.score -= 15;
       carCollisonCountPlayer1++;
       if (collisionCount1 == 45) {
-        player1.ready = false;
-        gameOver();
+        player1.ready = false; // gameOver();
+        raceResultScreen.innerHTML =
+          "Player 1's Car is Damaged<br />Press anywhere to view scorecard"; //<---
+        raceResult();
       }
       document.querySelector(".life1Left").src = "./img/lifeOver.png";
     }
@@ -345,7 +367,10 @@ function moveRightEnemy(carPlayer2) {
       carCollisonCountPlayer2++;
       if (collisionCount2 == 45) {
         player2.ready = false;
-        gameOver();
+        // gameOver();
+        raceResultScreen.innerHTML =
+          "Player 2's Car is Damaged<br />Press anywhere to view scorecard"; //<---
+        raceResult();
       }
       document.querySelector(".life1Right").src = "./img/lifeOver.png";
     }
@@ -549,11 +574,13 @@ function gamePlay() {
   window.requestAnimationFrame(gamePlay);
 }
 
-// gameOver fxn
-function gameOver() {
-  gameArea.classList.add("hide");
-  endScreen.classList.remove("hide");
+// fxn for ending race
+function raceResult() {
+  raceResultScreen.classList.remove("hide");
+}
 
+// fxn for displaying scorecard
+function gameOver() {
   let lapTimePlayer1 = document.querySelector(".laptimePlayer1");
   let fuelCollectedPlayer1 = document.querySelector(".fuelcollectedPlayer1");
   let carCollisionPlayer1 = document.querySelector(".carCollisionPlayer1");

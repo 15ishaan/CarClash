@@ -419,6 +419,21 @@ body {
   background-position-x: 100%;
   color: white;
 }
+.raceResult {
+  color: white;
+  width: 500px;
+  line-height: 90px;
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgb(31, 28, 28);
+  text-align: center;
+  border-radius: 20px;
+  cursor: pointer;
+  box-shadow: 1px 1px 2px white, -4px -4px 2px white;
+}
 .endScreen {
   height: 100vh;
   background-color: black;
