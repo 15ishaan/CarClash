@@ -188,7 +188,7 @@ body {
   background-repeat: no-repeat;
   background-size: 100% 100%;
   position: absolute;
-  top: -1000px; /*Change this value accordingly*/
+  top: -10000px; /*Change this value accordingly*/
 }
 .startLineRight {
   width: 100%;
@@ -206,7 +206,7 @@ body {
   background-repeat: no-repeat;
   background-size: 100%;
   position: absolute;
-  top: -500px; /*Change this value accordingly*/
+  top: -10000px; /*Change this value accordingly*/
 }
 .enemyLeft {
   position: absolute;

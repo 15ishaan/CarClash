@@ -24,8 +24,8 @@ const restartRace = document.querySelector(".restart");
 
 let startLineLeftPosition = 140;
 let startLineRightPosition = 140;
-let finishLineLeftPosition = -2000;
-let finishLineRightPosition = -2000;
+let finishLineLeftPosition = -10000;
+let finishLineRightPosition = -10000;
 let collisionCount1 = 0;
 let collisionCount2 = 0;
 
