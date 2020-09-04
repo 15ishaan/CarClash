@@ -12,13 +12,6 @@ const playerStatsRight = document.querySelector(".playerStatsRight");
 const scorePlayer1 = document.querySelector(".scorePlayer1");
 const scorePlayer2 = document.querySelector(".scorePlayer2");
 
-const life1Left = document.querySelector(".life1Left");
-const life2Left = document.querySelector(".life2Left");
-const life3Left = document.querySelector(".life3Left");
-const life1Right = document.querySelector(".life1Right");
-const life2Right = document.querySelector(".life2Right");
-const life3Right = document.querySelector(".life3Right");
-
 const carPlayer1Blue = document.querySelector(".carPlayer1Blue");
 const carPlayer1Lightblue = document.querySelector(".carPlayer1Lightblue");
 const carPlayer1Orange = document.querySelector(".carPlayer1Orange");
@@ -213,28 +206,28 @@ function moveRightLines() {
 function moveLeftStartLine() {
   let startLineLeft = document.querySelector(".startLineLeft");
 
-  startLineLeftPosition--;
+  startLineLeftPosition -= player1.speed;
   startLineLeft.style.bottom = startLineLeftPosition + "px";
 }
 
 function moveRightStartLine() {
   let startLineRight = document.querySelector(".startLineRight");
 
-  startLineRightPosition--;
+  startLineRightPosition -= player2.speed;
   startLineRight.style.bottom = startLineRightPosition + "px";
 }
 
 function moveLeftFinishLine(carPlayer1) {
   let finishLineLeft = document.querySelector(".finishLineLeft");
   if (player1RaceFinished(carPlayer1, finishLineLeft)) {
-    player1.ready = false;
-    // gameOver();
+    player1.ready = false;// gameOver();
+    player2.ready = false;
     raceResultScreen.innerHTML =
-      "Player 1's finished the race<br /><br />Press anywhere to view scorecard"; //<---
+      "Player 1 has finished the race<br /><br />Press anywhere to view Scorecard"; //<---
     raceResult();
   }
 
-  finishLineLeftPosition++;
+  finishLineLeftPosition += player1.speed;
   finishLineLeft.style.top = finishLineLeftPosition + "px";
 
   let distanceLeft = document.querySelector(".distanceRemainingPlayer1");
@@ -251,19 +244,17 @@ function moveRightFinishLine(carPlayer2) {
   let finishLineRight = document.querySelector(".finishLineRight");
 
   if (player2RaceFinished(carPlayer2, finishLineRight)) {
-    player2.ready = false;
-    // gameOver();
+    player2.ready = false;// gameOver();
+    player1.ready = false;
     raceResultScreen.innerHTML =
-      "Player 2's Finished the race<br />Press anywhere to view scorecard"; //<---
+      "Player 2 has Finished the race<br />Press anywhere to view Scorecard"; //<---
     raceResult();
   }
 
-  finishLineRightPosition++;
+  finishLineRightPosition += player2.speed;
   finishLineRight.style.top = finishLineRightPosition + "px";
 
-  let distanceRight = document.querySelector(
-    ".distanceRemainingPlayer2<br />Press anywhere to view scorecard"
-  );
+  let distanceRight = document.querySelector(".distanceRemainingPlayer2");
 
   let carRight = carPlayer2.getBoundingClientRect();
   let finishRight = finishLineRight.getBoundingClientRect();
@@ -305,11 +296,11 @@ function moveRightFuel(carPlayer2) {
 function fuelLeftBar() {
   var val1 = document.querySelector(".fuelMeterLeft").value;
   if (!val1) {
-    player1.ready = false;
+    player1.ready = false; //gameOver();
+    player2.ready = false;
     raceResultScreen.innerHTML =
-      "Player 1's ran out of Fuel<br />Press anywhere to view scorecard"; //<------
-    raceResult();
-    // gameOver();
+      "Player 1 ran out of Fuel<br />Press anywhere to view Scorecard"; //<------
+    raceResult(); 
   }
   val1 -= 0.3;
   document.querySelector(".fuelMeterLeft").value = val1;
@@ -318,10 +309,10 @@ function fuelLeftBar() {
 function fuelRightBar() {
   var val2 = document.querySelector(".fuelMeterRight").value;
   if (!val2) {
-    player2.ready = false;
-    // gameOver();
+    player1.ready = false;
+    player2.ready = false;// gameOver();
     raceResultScreen.innerHTML =
-      "Player 2's ran out of Fuel<br />Press anywhere to view scorecard"; //<---
+      "Player 2 ran out of Fuel<br />Press anywhere to view Scorecard"; //<---
     raceResult();
   }
   val2 -= 0.3;
@@ -336,13 +327,11 @@ function moveLeftEnemy(carPlayer1) {
       collisionCount1++;
       player1.score -= 15;
       carCollisonCountPlayer1++;
-      if (collisionCount1 == 45) {
-        player1.ready = false; // gameOver();
-        raceResultScreen.innerHTML =
-          "Player 1's Car is Damaged<br />Press anywhere to view scorecard"; //<---
-        raceResult();
-      }
-      document.querySelector(".life1Left").src = "./img/lifeOver.png";
+      player1.ready = false;
+      player2.ready = false; // gameOver();
+      raceResultScreen.innerHTML =
+        "Player 1's Car is Damaged<br />Press anywhere to view scorecard"; //<---
+      raceResult();
     }
     if (item.y >= 700) {
       item.y = -50;
@@ -365,14 +354,11 @@ function moveRightEnemy(carPlayer2) {
       collisionCount2++;
       player2.score -= 15;
       carCollisonCountPlayer2++;
-      if (collisionCount2 == 45) {
-        player2.ready = false;
-        // gameOver();
-        raceResultScreen.innerHTML =
-          "Player 2's Car is Damaged<br />Press anywhere to view scorecard"; //<---
-        raceResult();
-      }
-      document.querySelector(".life1Right").src = "./img/lifeOver.png";
+      player1.ready = false;
+      player2.ready = false;// gameOver();
+      raceResultScreen.innerHTML =
+        "Player 2's Car is Damaged<br />Press anywhere to view scorecard"; //<---
+      raceResult();
     }
     if (item.y >= 700) {
       item.y = -50;
@@ -537,8 +523,6 @@ function gamePlay() {
       lineScorePlayer1++;
       scorePlayer1.innerText = "Score: " + player1.score;
     }
-    if ((keys.s || keys.S) && player1.y < areaLeft.bottom - 92)
-      player1.y += player1.speed;
     if ((keys.a || keys.A) && player1.x > 0) player1.x -= player1.speed;
     if ((keys.d || keys.D) && player1.x < areaLeft.width - 60)
       player1.x += player1.speed;
@@ -557,8 +541,6 @@ function gamePlay() {
       lineScorePlayer2++;
       scorePlayer2.innerText = "Score: " + player2.score;
     }
-    if (keys.ArrowDown && player2.y < areaRight.bottom - 92)
-      player2.y += player2.speed;
     if (keys.ArrowLeft && player2.x > 0) player2.x -= player2.speed;
     if (keys.ArrowRight && player2.x < areaRight.width - 60)
       player2.x += player2.speed;
@@ -574,12 +556,12 @@ function gamePlay() {
   window.requestAnimationFrame(gamePlay);
 }
 
-// fxn for ending race
+// funciton for ending race
 function raceResult() {
   raceResultScreen.classList.remove("hide");
 }
 
-// fxn for displaying scorecard
+// function for displaying scorecard
 function gameOver() {
   let lapTimePlayer1 = document.querySelector(".laptimePlayer1");
   let fuelCollectedPlayer1 = document.querySelector(".fuelcollectedPlayer1");
@@ -594,29 +576,18 @@ function gameOver() {
   let result = document.querySelector(".result");
 
   lapTimePlayer1.innerHTML = "Lap Time: " + lineScorePlayer1;
-  fuelCollectedPlayer1.innerHTML =
-    "Fuel Collected: " + fuelScorePlayer1 + " litre";
+  fuelCollectedPlayer1.innerHTML = "Fuel Collected: " + fuelScorePlayer1 + " litre";
   carCollisionPlayer1.innerHTML = "Damage to Car: " + carCollisonCountPlayer1;
 
   lapTimePlayer2.innerHTML = "Lap Time: " + lineScorePlayer2;
-  fuelCollectedPlayer2.innerHTML =
-    "Fuel Collected: " + fuelScorePlayer2 + " litre";
+  fuelCollectedPlayer2.innerHTML = "Fuel Collected: " + fuelScorePlayer2 + " litre";
   carCollisionPlayer2.innerHTML = "Damage to Car: " + carCollisonCountPlayer2;
 
-  if (player1.score < 0) {
-    totalPlayer1.innerHTML = "&#127937; Score: 0";
-  } else {
-    totalPlayer1.innerHTML = "&#127937; Score: " + player1.score;
-  }
-  if (player1.score < 0) {
-    totalPlayer2.innerHTML = "&#127937; Score: 0";
-  } else {
-    totalPlayer2.innerHTML = "&#127937; Score: " + player2.score;
-  }
+  if (player1.score < 0) totalPlayer1.innerHTML = "&#127937; Score: 0";
+  else totalPlayer1.innerHTML = "&#127937; Score: " + player1.score;
+  if (player1.score < 0) totalPlayer2.innerHTML = "&#127937; Score: 0";
+  else totalPlayer2.innerHTML = "&#127937; Score: " + player2.score;
 
-  if (player1.score > player2.score) {
-    result.innerHTML = "&#127942; Player 2 Won";
-  } else {
-    result.innerHTML = "&#127942; Player 1 Won";
-  }
+  if (player1.score > player2.score) result.innerHTML = "&#127942; Player 1 Won";
+  else result.innerHTML = "&#127942; Player 2 Won";
 }
