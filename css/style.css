@@ -60,17 +60,17 @@ body {
   background-color: palegreen;
   clip-path: polygon(0 0, 100% 0, 92% 50%, 100% 100%, 0 100%);
 }
-.life1Left{
+.life1Left {
   position: absolute;
   top: 220px;
   left: 89px;
 }
-.life2Left{
+.life2Left {
   position: absolute;
   top: 220px;
   left: 45px;
 }
-.life3Left{
+.life3Left {
   position: absolute;
   top: 220px;
   left: 1px;
@@ -129,17 +129,17 @@ body {
   background-color: palegreen;
   clip-path: polygon(0 0, 100% 0, 92% 50%, 100% 100%, 0 100%);
 }
-.life1Right{
+.life1Right {
   position: absolute;
   top: 220px;
   right: 114px;
 }
-.life2Right{
+.life2Right {
   position: absolute;
   top: 220px;
   right: 70px;
 }
-.life3Right{
+.life3Right {
   position: absolute;
   top: 220px;
   right: 26px;
@@ -179,7 +179,7 @@ body {
   background-repeat: no-repeat;
   background-size: 100% 100%;
   position: absolute;
-  bottom: 120px;
+  bottom: 140px;
 }
 .finishLineLeft {
   width: 100%;
@@ -197,7 +197,7 @@ body {
   background-repeat: no-repeat;
   background-size: 100%;
   position: absolute;
-  bottom: 120px;
+  bottom: 140px;
 }
 .finishLineRight {
   width: 100%;
@@ -223,14 +223,14 @@ body {
   height: 90px;
   position: absolute;
   left: 205px;
-  bottom: 10px;
+  bottom: 20px;
 }
 .carPlayer2 {
   width: 50px;
   height: 90px;
   position: absolute;
   left: 205px;
-  bottom: 10px;
+  bottom: 20px;
 }
 .gameAreaLeft {
   overflow: hidden;
@@ -258,14 +258,14 @@ body {
   width: 60px;
   height: 60px;
   background: url("../img/fuel.png");
-  background-size: 100%;
+  background-size: 100% 100%;
   position: absolute;
 }
 .fuelRight {
   width: 60px;
   height: 60px;
   background: url("../img/fuel.png");
-  background-size: 100%;
+  background-size: 100% 100%;
   position: absolute;
 }
 .startScreen {
@@ -418,4 +418,92 @@ body {
 .playerReady:hover {
   background-position-x: 100%;
   color: white;
+}
+.endScreen {
+  height: 100vh;
+  background-color: black;
+  position: relative;
+  font-size: 28px;
+}
+.title {
+  font-size: 50px;
+  background: palegreen;
+  text-align: center;
+  padding: 5px 15px;
+  position: absolute;
+  top: 12%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 5px;
+  border-bottom: 3px solid grey;
+}
+.player {
+  font-size: 40px;
+  border-bottom: 2px solid white;
+  padding-bottom: 10px;
+}
+.player1Scorecard {
+  position: absolute;
+  top: 30%;
+  left: 25%;
+  text-align: center;
+  color: white;
+}
+.laptimePlayer1 {
+  margin-top: 10px;
+}
+.fuelcollectedPlayer1 {
+  margin-top: 10px;
+}
+.carCollisionPlayer1 {
+  margin-top: 10px;
+}
+.totalPlayer1 {
+  margin-top: 10px;
+  color: palegreen;
+}
+.player2Scorecard {
+  position: absolute;
+  top: 30%;
+  right: 20%;
+  text-align: center;
+  color: white;
+}
+.laptimePlayer2 {
+  margin-top: 10px;
+}
+.fuelcollectedPlayer2 {
+  margin-top: 10px;
+}
+.carCollisionPlayer2 {
+  margin-top: 10px;
+}
+.totalPlayer2 {
+  margin-top: 10px;
+  color: palegreen;
+}
+.result {
+  position: absolute;
+  top: 75%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: palegreen;
+  padding: 10px 40px;
+  clip-path: polygon(0 0, 100% 0, 92% 50%, 100% 100%, 0 100%, 8% 50%);
+}
+.restart {
+  position: absolute;
+  top: 91%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 5px 15px;
+  color: white;
+  border-bottom: 2px solid palegreen;
+  border-radius: 5px;
+  transition: all 0.3s ease-in-out;
+}
+.restart:hover {
+  background-color: palegreen;
+  color: black;
+  cursor: pointer;
 }
