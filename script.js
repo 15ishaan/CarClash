@@ -595,7 +595,7 @@ function gameOver() {
 
   if (player1.score < 0) totalPlayer1.innerHTML = "&#127937; Score: 0";
   else totalPlayer1.innerHTML = "&#127937; Score: " + player1.score;
-  if (player1.score < 0) totalPlayer2.innerHTML = "&#127937; Score: 0";
+  if (player2.score < 0) totalPlayer2.innerHTML = "&#127937; Score: 0";
   else totalPlayer2.innerHTML = "&#127937; Score: " + player2.score;
 }
 
